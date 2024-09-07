@@ -1,0 +1,8 @@
+.env
+.DS_Store
+*.png
+*.jpg
+*.jpeg
+*.pdf
+database
+postgres-data
