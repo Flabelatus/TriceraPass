@@ -74,11 +74,12 @@ All configurations are handled via the `settings.yml` file. You need to configur
 
     ```yaml
     api:
-        name: tricerapass-auth-service
+        name: TriceraPass Auth Service
         version: 1.0.0
-        description: God creates dinosaurs. God destroys dinosaurs. God creates man. Man destroys God. Man creates dinosaurs.
+        description: "God creates dinosaurs! God destroys dinosaurs! God creates man! Man destroys God! Man creates dinosaurs!"
         allowedOrigins:
             - http://localhost:3000
+            - http://localhost:5051
             - https://dr-malcom.com
         rateLimiting:
             requestsPerMinute: 100
@@ -111,11 +112,16 @@ All configurations are handled via the `settings.yml` file. You need to configur
         host: localhost
         port: 5432
         user: velociRaptor
-        password: CLevErG!rl
+        password: CleverGirl
         dbname: dino-division
         sslmode: disable
         timezone: UTC
         connect_timeout: 5
+
+    emailServer:
+        serverName: mailgun
+        apiKey: your_mailgun_api_key
+        domain: your_mailgun_domain
 
     redis:
         host: localhost
@@ -123,11 +129,12 @@ All configurations are handled via the `settings.yml` file. You need to configur
         expirationTime: 86400
 
     styles:
-        headerColor: "#ffffff"
+        headerColor: "#ffff00"
+        headerBackground: "#3300ff"
         headerFont: "Ac437_Acer_VGA_8x8"
         bodyFont: "Unifont"
-        bodyColor: "#fff"
-        bodyBackground: "#3300ff"
+        bodyColor: "#3300ff"
+        bodyBackground: "#ccffff"
         headerFontSize: "24px"
     ```
 
