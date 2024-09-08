@@ -1,5 +1,5 @@
 api:
-  name: tricerapass-auth-service
+  name: TriceraPass Auth Service
   version: 1.0.0
   description: God creates dinosaurs. God destroys dinosaurs. God creates man. Man destroys God. Man creates dinosaurs.
   allowedOrigins:
@@ -48,9 +48,9 @@ redis:
   expirationTime: 86400
 
 styles:
-  headerColor: "#ffffff"
+  headerColor: "#ffff88"
   headerFont: "Ac437_Acer_VGA_8x8"
   bodyFont: "Unifont"
-  bodyColor: "#fff"
+  bodyColor: "#ffff00"
   bodyBackground: "#3300ff"
   headerFontSize: "24px"
