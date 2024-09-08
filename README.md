@@ -74,31 +74,32 @@ All configurations are handled via the `settings.yml` file. You need to configur
 
     ```yaml
     api:
-        name: authentication-service
+        name: tricerapass-auth-service
         version: 1.0.0
+        description: God creates dinosaurs. God destroys dinosaurs. God creates man. Man destroys God. Man creates dinosaurs.
         allowedOrigins:
             - http://localhost:3000
-            - https://robotlab-residualwood.onrender.com
+            - https://dr-malcom.com
         rateLimiting:
             requestsPerMinute: 100
             burst: 50
 
     application:  
-        clientName: Hogeschool van Amsterdam - Robot Lab
+        clientName: Jurassic Login Park - Dino Auth Division
         cookieDomain: localhost
-        domain: robotlab-auth-service.com
+        domain: dr-malcom.com
 
     server:
-        port: 8082
+        port: 1993
         host: 0.0.0.0
         developmentMode: true
 
     security:
         jwt:
-            secret: robotlab-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
+            secret: TRICERATOPLESS-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
             expirationTime: 3600
-            issuer: robotlab-auth-service.com
-            audience: robotlab-auth-service.com
+            issuer: dr-malcom.com
+            audience: dr-malcom.com
 
     logging:
         level: INFO
@@ -109,9 +110,9 @@ All configurations are handled via the `settings.yml` file. You need to configur
         type: postgres
         host: localhost
         port: 5432
-        user: robotlab-admin
-        password: Robotlab2024
-        dbname: robotlab-auth-service
+        user: velociRaptor
+        password: CLevErG!rl
+        dbname: dino-division
         sslmode: disable
         timezone: UTC
         connect_timeout: 5
@@ -142,7 +143,7 @@ All configurations are handled via the `settings.yml` file. You need to configur
 
 2. **Access the API**:
 
-    The API will be available at `http://localhost:8082/auth/api/`.
+    The API will be available at `http://localhost:1993/auth/api/`.
 
 ---
 

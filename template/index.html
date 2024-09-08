@@ -12,22 +12,47 @@
             background-color: {{ .Styles.BodyBackground }};
         }
 
+        a {
+            font-family: "{{ .Styles.BodyFont }}";
+            color: {{ .Styles.BodyColor }};
+            background-color: {{ .Styles.BodyBackground }};
+        }
+
         h1 {
             color: {{ .Styles.HeaderColor }};
             font-family: "{{ .Styles.HeaderFont }}";
             font-size: {{ .Styles.HeaderFontSize }};
         }
+
+        h4 {
+            color: {{ .Styles.HeaderColor }};
+            font-family: "{{ .Styles.HeaderFont }}";
+        }
     </style>
 </head>
 
 <body>
-    <h1 style="margin: 20px; margin-top: 40px;">Welcome to {{ .API.Name }}!</h1>
+    <header>
+        <h1 style="margin: 20px; margin-top: 40px;">Welcome to {{ .API.Name }}!</h1>
+        <h4 style="margin: 20px; margin-top: 40px;">A Simple REST API for Athentication Service</h4>
+    </header>
+    
     <hr />
-    <p style="margin-left: 20px; margin-right: 20px;">Version: {{ .API.Version }}</p>
-    <p style="margin-left: 20px; margin-right: 20px;">Client: {{ .Application.ClientName }}</p>
-    <p style="margin-left: 20px; margin-right: 20px;">Domain: {{ .Application.Domain }}</p>
-    <br />
-    <p style="margin-left: 20px; margin-right: 20px;">Description: {{ .API.Description }}</p>
+    <div style="height: 500px">
+        <p style="margin-left: 20px; margin-right: 20px;">Version: {{ .API.Version }}</p>
+        <p style="margin-left: 20px; margin-right: 20px;">Client: {{ .Application.ClientName }}</p>
+        <p style="margin-left: 20px; margin-right: 20px;">Domain: {{ .Application.Domain }}</p>
+        <br />
+        <p style="margin-left: 20px; margin-right: 20px;">
+            <strong style="font-size: larger;">Description:</strong><br />
+                <p style="margin-left: 20px; margin-right: 20px;">{{ .API.Description }}</p>
+        </p>
+    </div>
+    
+    <footer>
+        <label style="margin-left: 20px; margin-right: 20px; font-size: medium;">Contact: jooshesh.javid@gmail.com</label>
+        <a href="https://github.com/Flabelatus/TriceraPass" style="margin-left: 20px; margin-right: 20px; font-size: medium;">TriceraPass</a>
+    </footer>
 </body>
 
 </html>
