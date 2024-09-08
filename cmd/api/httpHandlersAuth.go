@@ -53,21 +53,22 @@ func (a *application) Home(w http.ResponseWriter, r *http.Request) {
 
 	type Info struct {
 		API struct {
-			Name        string `json:"name"`
-			Version     string `json:"version"`
-			Description string `json:"description"`
+			Name        string        `json:"name"`
+			Version     string        `json:"version"`
+			Description template.HTML `json:"description"`
 		} `json:"api"`
 		Application struct {
 			ClientName string `json:"client_name"`
 			Domain     string `json:"domain"`
 		} `json:"application"`
 		Styles struct {
-			HeaderColor    string
-			HeaderFont     string
-			BodyFont       string
-			BodyColor      string
-			BodyBackground string
-			HeaderFontSize string
+			HeaderBackground string
+			HeaderColor      string
+			HeaderFont       string
+			BodyFont         string
+			BodyColor        string
+			BodyBackground   string
+			HeaderFontSize   string
 		}
 	}
 
@@ -78,15 +79,17 @@ func (a *application) Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	description := template.HTML(strings.ReplaceAll(conf.API.Description, "!", "! <br>"))
+
 	info := &Info{
 		API: struct {
-			Name        string `json:"name"`
-			Version     string `json:"version"`
-			Description string `json:"description"`
+			Name        string        `json:"name"`
+			Version     string        `json:"version"`
+			Description template.HTML `json:"description"`
 		}{
 			Name:        conf.API.Name,
 			Version:     conf.API.Version,
-			Description: conf.API.Description,
+			Description: description,
 		},
 		Application: struct {
 			ClientName string `json:"client_name"`
@@ -96,19 +99,21 @@ func (a *application) Home(w http.ResponseWriter, r *http.Request) {
 			Domain:     conf.Application.Domain,
 		},
 		Styles: struct {
-			HeaderColor    string
-			HeaderFont     string
-			BodyFont       string
-			BodyColor      string
-			BodyBackground string
-			HeaderFontSize string
+			HeaderBackground string
+			HeaderColor      string
+			HeaderFont       string
+			BodyFont         string
+			BodyColor        string
+			BodyBackground   string
+			HeaderFontSize   string
 		}{
-			HeaderColor:    conf.Styles.HeaderColor,
-			HeaderFont:     conf.Styles.HeaderFont,
-			BodyFont:       conf.Styles.BodyFont,
-			BodyColor:      conf.Styles.BodyColor,
-			BodyBackground: conf.Styles.BodyBackground,
-			HeaderFontSize: conf.Styles.HeaderFontSize,
+			HeaderBackground: conf.Styles.HeaderBackground,
+			HeaderColor:      conf.Styles.HeaderColor,
+			HeaderFont:       conf.Styles.HeaderFont,
+			BodyFont:         conf.Styles.BodyFont,
+			BodyColor:        conf.Styles.BodyColor,
+			BodyBackground:   conf.Styles.BodyBackground,
+			HeaderFontSize:   conf.Styles.HeaderFontSize,
 		},
 	}
 	// Check the request header to see if the client expects JSON or HTML

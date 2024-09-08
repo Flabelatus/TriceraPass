@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SETTINGS_FILE="./settings.yml"
+POSTGRES_HOST="localhost"
 
 # Function to install yq based on the operating system
 install_yq() {
@@ -35,10 +36,21 @@ else
   echo "yq is already installed."
 fi
 
+# Check if the --docker flag is passed
+if [[ "$1" == "--docker" ]]; then
+  POSTGRES_HOST="postgres"
+fi
+
 # Extracting other settings
 POSTGRES_USER=$(yq e '.database.user' $SETTINGS_FILE)
 POSTGRES_PASSWORD=$(yq e '.database.password' $SETTINGS_FILE)
 POSTGRES_DB=$(yq e '.database.dbname' $SETTINGS_FILE)
+
+
+# Extract mail server credentials
+MAIL_SERVER_NAME=$(yq e '.emailServer.serverName' $SETTINGS_FILE)
+MAIL_SERVER_API_KEY=$(yq e '.emailServer.apiKey' $SETTINGS_FILE)
+MAIL_SERVER_DOMAIN=$(yq e '.emailServer.domain' $SETTINGS_FILE)
 
 # Extract the server port from settings.yml
 AUTH_SERVICE_PORT=$(yq e '.server.port' $SETTINGS_FILE)
@@ -48,12 +60,16 @@ CORS=$(yq e '.api.allowedOrigins[]' $SETTINGS_FILE | paste -sd "," -)
 
 # Generate the .env file
 cat > .env <<EOL
+POSTGRES_HOST=$POSTGRES_HOST
 POSTGRES_USER=$POSTGRES_USER
 POSTGRES_PASSWORD=$POSTGRES_PASSWORD
 POSTGRES_DB=$POSTGRES_DB
 CONFIG_FILE=./settings.yml
-CORS=$CORS
 AUTH_SERVICE_PORT=$AUTH_SERVICE_PORT
+MAIL_SERVER_NAME=$MAIL_SERVER_NAME
+MAIL_SERVER_API_KEY=$MAIL_SERVER_API_KEY
+MAIL_SERVER_DOMAIN=$MAIL_SERVER_DOMAIN
+CORS=$CORS
 EOL
 
 echo ".env file has been generated from settings.yml"

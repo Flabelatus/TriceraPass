@@ -33,7 +33,7 @@ func SendEmail(domain, apiKey, emailTo, userName, userID, emailType string, dela
 	case "confirmation":
 		htmlFilename = "confirmationEmail"
 		emailSubject = "Sign Up Confirmation for"
-		msg = "Thank you for registering at QuickBiller! Please verify your email to confirm your account using this link"
+		msg = "Thank you for registering at Authentication API! Please verify your email to confirm your account using this link"
 	}
 
 	user := UserData{UserID: userID, Username: userName}
@@ -47,7 +47,7 @@ func SendEmail(domain, apiKey, emailTo, userName, userID, emailType string, dela
 	}
 
 	m := mg.NewMessage(
-		fmt.Sprintf("QuickBiller <mailgun@%s>", domain),
+		fmt.Sprintf("Authentication API <mailgun@%s>", domain),
 		fmt.Sprintf("%s %s", emailSubject, userName),
 		msg,
 		emailTo,
@@ -89,10 +89,10 @@ func SendEmail(domain, apiKey, emailTo, userName, userID, emailType string, dela
 func ContactSubmit(domain, apiKey, userEmail, msg string) (string, error) {
 	mg := mailgun.NewMailgun(domain, apiKey)
 	m := mg.NewMessage(
-		fmt.Sprintf("QuickBiller <mailgun@%s>", domain),
+		fmt.Sprintf("Authentication API <mailgun@%s>", domain),
 		fmt.Sprintf("Contact form submitted from %s", userEmail),
 		msg,
-		"jooshesh.javid@gmail.com",
+		"flabelatus@gmail.com",
 	)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()

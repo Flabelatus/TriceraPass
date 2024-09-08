@@ -14,9 +14,15 @@ if ! command -v curl >/dev/null 2>&1; then
   apk --no-cache add curl || { echo "Failed to install curl. Exiting."; exit 1; }
 fi
 
-# Create the .env file
-echo "Generating .env file from settings.yml..."
-./generate-env.sh
+# Create the .env file 
+if [ "$1" == "--docker" ]; then
+  echo "Generating .env file from settings.yml for docker instance... "
+  ./generate-env.sh --docker
+else
+  echo "Generating .env file from settings.yml for local instance... "
+  ./generate-env.sh 
+fi
+
 
 if [ $? -eq 0 ]; then
   echo ".env file generated successfully."

@@ -4,18 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>{{ .API.Name }} - {{ .API.Version }}</title>
     <style>
+        header {
+            background-color: {{ .Styles.HeaderBackground }};
+        }
+
+        footer {
+            background-color: {{ .Styles.HeaderBackground }};
+        }
+
         body {
             font-family: "{{ .Styles.BodyFont }}";
             color: {{ .Styles.BodyColor }};
             background-color: {{ .Styles.BodyBackground }};
+            font-size: 22px
         }
 
         a {
             font-family: "{{ .Styles.BodyFont }}";
-            color: {{ .Styles.BodyColor }};
-            background-color: {{ .Styles.BodyBackground }};
+            color: {{ .Styles.HeaderColor }};
+            /* background-color: {{ .Styles.BodyBackground }}; */
+        }
+
+        label {
+            color: {{ .Styles.HeaderColor }};
         }
 
         h1 {
@@ -32,25 +47,40 @@
 </head>
 
 <body>
-    <header>
+    <header class="px-3 py-1" >
         <h1 style="margin: 20px; margin-top: 40px;">Welcome to {{ .API.Name }}!</h1>
-        <h4 style="margin: 20px; margin-top: 40px;">A Simple REST API for Athentication Service</h4>
+        <h4 style="margin: 20px; margin-top: 10px; font-size: 15px;">A Simple REST API for Athentication Service</h4>
     </header>
-    
-    <hr />
-    <div style="height: 500px">
-        <p style="margin-left: 20px; margin-right: 20px;">Version: {{ .API.Version }}</p>
-        <p style="margin-left: 20px; margin-right: 20px;">Client: {{ .Application.ClientName }}</p>
-        <p style="margin-left: 20px; margin-right: 20px;">Domain: {{ .Application.Domain }}</p>
-        <br />
-        <p style="margin-left: 20px; margin-right: 20px;">
-            <strong style="font-size: larger;">Description:</strong><br />
-                <p style="margin-left: 20px; margin-right: 20px;">{{ .API.Description }}</p>
-        </p>
+    <div class="mb-5" style="height: 380px;">
+        <div class="row px-5 mt-5">
+            <div class="col-md-3">
+                <div class="px-2 py-2 row justify-content-center text-center" style="background-color: #ccffff;">
+                    <img alt="Triceratops logo" src="/assets/img/logo.png" style="width: 300px;" />
+                </div>
+            </div>
+            <div class="col">
+                <div  class="px-2 py-2" style="border: #3300ff 1px solid; width: fit-content;">
+                    <p style="margin-left: 20px; margin-right: 20px;">Version: {{ .API.Version }}</p>
+                    <p style="margin-left: 20px; margin-right: 20px;">Client: {{ .Application.ClientName }}</p>
+                    <p style="margin-left: 20px; margin-right: 20px;">Domain: {{ .Application.Domain }}</p>
+                </div>
+                
+                <br />
+                <div class="px-2 py-2" style="border: #3300ff 0px solid; width: fit-content;">
+                    <p style="margin-left: 20px; margin-right: 20px;">
+                        <strong style="font-size: larger;">Description:</strong><br />
+                        <p style="margin-left: 20px; margin-right: 20px;">{{ .API.Description }}</p>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
     </div>
+    <br />
     
-    <footer>
+    <footer class="mt-5 py-4 text-center" style="height: 100px;">
         <label style="margin-left: 20px; margin-right: 20px; font-size: medium;">Contact: jooshesh.javid@gmail.com</label>
+        <label style="margin-left: 20px; margin-right: 20px; font-size: medium;">&copy; 2024 Flabelatus</label>
         <a href="https://github.com/Flabelatus/TriceraPass" style="margin-left: 20px; margin-right: 20px; font-size: medium;">TriceraPass</a>
     </footer>
 </body>

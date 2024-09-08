@@ -1,7 +1,7 @@
 api:
   name: TriceraPass Auth Service
   version: 1.0.0
-  description: God creates dinosaurs. God destroys dinosaurs. God creates man. Man destroys God. Man creates dinosaurs.
+  description: "God creates dinosaurs! God destroys dinosaurs! God creates man! Man destroys God! Man creates dinosaurs!"
   allowedOrigins:
     - http://localhost:3000
     - http://localhost:5051
@@ -34,7 +34,7 @@ logging:
 
 database:
   type: postgres
-  host: postgres
+  host: localhost
   port: 5432
   user: velociRaptor
   password: CleverGirl
@@ -43,15 +43,21 @@ database:
   timezone: UTC
   connect_timeout: 5
 
+emailServer:
+  serverName: mailgun
+  apiKey: your_mailgun_api_key
+  domain: your_mailgun_domain
+
 redis:
   host: localhost
   port: 6379
   expirationTime: 86400
 
 styles:
-  headerColor: "#ffff88"
+  headerColor: "#ffff00"
+  headerBackground: "#3300ff"
   headerFont: "Ac437_Acer_VGA_8x8"
   bodyFont: "Unifont"
-  bodyColor: "#ffff00"
-  bodyBackground: "#3300ff"
+  bodyColor: "#3300ff"
+  bodyBackground: "#ccffff"
   headerFontSize: "24px"

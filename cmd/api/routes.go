@@ -13,6 +13,9 @@ func (app *application) routes() http.Handler {
 	mux.Use(middleware.Logger)
 	mux.Use(app.enableCORS)
 
+	fs := http.FileServer(http.Dir("./template/docs/assets"))
+	mux.Handle("/assets/*", http.StripPrefix("/assets/", fs))
+
 	// Auth
 	mux.Get("/auth/api/", app.Home)
 	mux.Post("/auth/api/login", app.authenticate)

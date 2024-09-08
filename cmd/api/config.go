@@ -43,11 +43,12 @@ type Config struct {
 		Domain       string `yaml:"domain"`
 	} `yaml:"application"`
 	Styles struct {
-		HeaderColor    string `yaml:"headerColor"`
-		HeaderFont     string `yaml:"headerFont"`
-		BodyFont       string `yaml:"bodyFont"`
-		BodyColor      string `yaml:"bodyColor"`
-		BodyBackground string `yaml:"bodyBackground"`
-		HeaderFontSize string `yaml:"headerFontSize"`
+		HeaderBackground string `yaml:"headerBackground"`
+		HeaderColor      string `yaml:"headerColor"`
+		HeaderFont       string `yaml:"headerFont"`
+		BodyFont         string `yaml:"bodyFont"`
+		BodyColor        string `yaml:"bodyColor"`
+		BodyBackground   string `yaml:"bodyBackground"`
+		HeaderFontSize   string `yaml:"headerFontSize"`
 	} `yaml:"styles"`
 }

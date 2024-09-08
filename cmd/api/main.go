@@ -53,7 +53,7 @@ func main() {
 
 	defaultDSN := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s timezone=%s connect_timeout=%s",
-		config.Database.Host,
+		os.Getenv("POSTGRES_HOST"),
 		config.Database.Port,
 		config.Database.User,
 		config.Database.Password,
@@ -105,6 +105,11 @@ func main() {
 		log.Println(err)
 		return
 	}
+
+	fs := http.FileServer(http.Dir("./docs/assets"))
+    http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+    // Handle the home route
+    // http.HandleFunc("/", app.Home)
 
 	// Starting the webserver
 	log.Printf("Starting the application on port: %v", config.Server.Port)
