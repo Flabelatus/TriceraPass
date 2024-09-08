@@ -108,7 +108,7 @@ func main() {
 
 	// Starting the webserver
 	log.Printf("Starting the application on port: %v", config.Server.Port)
-	err = http.ListenAndServe(fmt.Sprintf("localhost:%d", config.Server.Port), app.routes())
+	err = http.ListenAndServe(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port), app.routes())
 	if err != nil {
 		log.Fatal(err)
 		return
