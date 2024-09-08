@@ -33,10 +33,13 @@ func (app *application) enableCORS(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 		if isOriginAllowed(origin, allowOriginList) {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
+			for _, url := range allowOriginList {
+				fmt.Println(url)
+				w.Header().Set("Access-Control-Allow-Origin", url)
+			}
+			// w.Header().Set("Access-Control-Allow-Origin", origin)
 			// w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
-		// w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 
 		if r.Method == "OPTIONS" {
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
