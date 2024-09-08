@@ -160,7 +160,7 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 
 	user, err := app.Repository.GetUserByEmail(requestPayload.Email)
 	if err != nil {
-		app.errorJSON(w, errors.New("invalid credentials"), http.StatusBadRequest)
+		app.errorJSON(w, errors.New("invalid credentials"), http.StatusUnauthorized)
 		return
 	}
 
