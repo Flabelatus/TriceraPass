@@ -4,6 +4,7 @@ api:
   description: God creates dinosaurs. God destroys dinosaurs. God creates man. Man destroys God. Man creates dinosaurs.
   allowedOrigins:
     - http://localhost:3000
+    - http://localhost:5051
     - https://dr-malcom.com
   rateLimiting:
     requestsPerMinute: 100
@@ -33,10 +34,10 @@ logging:
 
 database:
   type: postgres
-  host: localhost
+  host: postgres
   port: 5432
   user: velociRaptor
-  password: CLevErG!rl
+  password: CleverGirl
   dbname: dino-division
   sslmode: disable
   timezone: UTC
