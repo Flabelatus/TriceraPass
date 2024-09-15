@@ -3,7 +3,7 @@
 SETTINGS_FILE="./settings.yml"
 POSTGRES_HOST="localhost"
 
-# Function to install yq based on the operating system
+# Install yq based on the operating system
 install_yq() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # Install yq on Linux
@@ -42,21 +42,21 @@ if [[ "$1" == "--docker" ]]; then
 fi
 
 # Extracting other settings
+# POSTGRES_HOST=$POSTGRES_HOST
 POSTGRES_USER=$(yq e '.database.user' $SETTINGS_FILE)
 POSTGRES_PASSWORD=$(yq e '.database.password' $SETTINGS_FILE)
 POSTGRES_DB=$(yq e '.database.dbname' $SETTINGS_FILE)
 
-
 # Extract mail server credentials
-MAIL_SERVER_NAME=$(yq e '.emailServer.serverName' $SETTINGS_FILE)
-MAIL_SERVER_API_KEY=$(yq e '.emailServer.apiKey' $SETTINGS_FILE)
-MAIL_SERVER_DOMAIN=$(yq e '.emailServer.domain' $SETTINGS_FILE)
+MAIL_SERVER_NAME=$(yq e '.email_server.server_name' $SETTINGS_FILE)
+MAIL_SERVER_API_KEY=$(yq e '.email_server.api_key' $SETTINGS_FILE)
+MAIL_SERVER_DOMAIN=$(yq e '.email_server.domain' $SETTINGS_FILE)
 
 # Extract the server port from settings.yml
 AUTH_SERVICE_PORT=$(yq e '.server.port' $SETTINGS_FILE)
 
-# Extract allowedOrigins and join them into a single line separated by commas
-CORS=$(yq e '.api.allowedOrigins[]' $SETTINGS_FILE | paste -sd "," -)
+# Extract allowed_origins and join them into a single line separated by commas
+CORS=$(yq e '.api.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
 
 # Generate the .env file
 cat > .env <<EOL
