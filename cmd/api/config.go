@@ -7,15 +7,15 @@ type Config struct {
 		Version     string `yaml:"version"`
 		Description string `yaml:"description"`
 		RateLimit   struct {
-			RequestPerMinute int `yaml:"requestsPerMinute"`
-			burst            int `yaml:"burst"`
-		} `yaml:"rateLimiting"`
+			RequestsPerMinute int `yaml:"requests_per_minute"`
+			Burst             int `yaml:"burst"`
+		} `yaml:"rate_limiting"`
 	} `yaml:"api"`
 
 	Server struct {
 		Port            int    `yaml:"port"`
 		Host            string `yaml:"host"`
-		DevelopmentMode bool   `yaml:"developmentMode"`
+		DevelopmentMode bool   `yaml:"development_mode"`
 	} `yaml:"server"`
 
 	Database struct {
@@ -31,24 +31,25 @@ type Config struct {
 
 	Security struct {
 		JWT struct {
-			JWTSecret   string `yaml:"secret"`
-			JWTIssuer   string `yaml:"issuer"`
-			JWTAudience string `yaml:"audience"`
+			Secret   string `yaml:"secret"`
+			Issuer   string `yaml:"issuer"`
+			Audience string `yaml:"audience"`
 		} `yaml:"jwt"`
 	} `yaml:"security"`
 
 	Application struct {
-		ClientName   string `yaml:"clientName"`
-		CookieDomain string `yaml:"cookieDomain"`
+		ClientName   string `yaml:"client_name"`
+		CookieDomain string `yaml:"cookie_domain"`
 		Domain       string `yaml:"domain"`
 	} `yaml:"application"`
+
 	Styles struct {
-		HeaderBackground string `yaml:"headerBackground"`
-		HeaderColor      string `yaml:"headerColor"`
-		HeaderFont       string `yaml:"headerFont"`
-		BodyFont         string `yaml:"bodyFont"`
-		BodyColor        string `yaml:"bodyColor"`
-		BodyBackground   string `yaml:"bodyBackground"`
-		HeaderFontSize   string `yaml:"headerFontSize"`
+		HeaderBackground string `yaml:"header_background"`
+		HeaderColor      string `yaml:"header_color"`
+		HeaderFont       string `yaml:"header_font"`
+		BodyFont         string `yaml:"body_font"`
+		BodyColor        string `yaml:"body_color"`
+		BodyBackground   string `yaml:"body_background"`
+		HeaderFontSize   string `yaml:"header_font_size"`
 	} `yaml:"styles"`
 }

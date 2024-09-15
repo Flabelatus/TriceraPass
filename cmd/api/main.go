@@ -1,6 +1,7 @@
 package main
 
 import (
+	"TriceraPass/cmd/api/auth"
 	"TriceraPass/internal/repositories"
 	"flag"
 	"fmt"
@@ -24,7 +25,7 @@ type application struct {
 	DSN          string
 	Domain       string
 	Repository   *repositories.GORMRepo
-	auth         Auth
+	auth         auth.Auth
 	JWTSecret    string
 	JWTAudience  string
 	JWTIssuer    string
@@ -65,9 +66,9 @@ func main() {
 
 	// read from command line
 	flag.StringVar(&app.DSN, "dsn", defaultDSN, "Postgres connection string")
-	flag.StringVar(&app.JWTSecret, "jwt-secret", config.Security.JWT.JWTSecret, "JWT signing secret")
-	flag.StringVar(&app.JWTIssuer, "jwt-issuer", config.Security.JWT.JWTIssuer, "JWT signing issuer")
-	flag.StringVar(&app.JWTAudience, "jwt-audience", config.Security.JWT.JWTAudience, "JWT signing audience")
+	flag.StringVar(&app.JWTSecret, "jwt-secret", config.Security.JWT.Secret, "JWT signing secret")
+	flag.StringVar(&app.JWTIssuer, "jwt-issuer", config.Security.JWT.Issuer, "JWT signing issuer")
+	flag.StringVar(&app.JWTAudience, "jwt-audience", config.Security.JWT.Audience, "JWT signing audience")
 	flag.StringVar(&app.CookieDomain, "cookie-domain", config.Application.CookieDomain, "Cookie domain")
 	flag.StringVar(&app.Domain, "domain", config.Application.Domain, "Application domain")
 	flag.Parse()
@@ -80,7 +81,7 @@ func main() {
 	app.Repository = &repositories.GORMRepo{}
 
 	// Initiate the auth object
-	app.auth = Auth{
+	app.auth = auth.Auth{
 		Issuer:        app.JWTIssuer,
 		Audience:      app.JWTAudience,
 		Secret:        app.JWTSecret,
@@ -107,9 +108,9 @@ func main() {
 	}
 
 	fs := http.FileServer(http.Dir("./docs/assets"))
-    http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-    // Handle the home route
-    // http.HandleFunc("/", app.Home)
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	// Handle the home route
+	// http.HandleFunc("/", app.Home)
 
 	// Starting the webserver
 	log.Printf("Starting the application on port: %v", config.Server.Port)

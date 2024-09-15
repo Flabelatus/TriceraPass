@@ -1,6 +1,7 @@
 package main
 
 import (
+	"TriceraPass/cmd/api/auth"
 	"TriceraPass/internal/controllers"
 	"TriceraPass/internal/models"
 	"errors"
@@ -176,7 +177,7 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// create a jwt user
-	u := jwtUser{
+	u := auth.JwtUser{
 		ID:        user.ID,
 		UserName:  user.UserName,
 		FirstName: user.FirstName,
@@ -199,7 +200,7 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 	for _, cookie := range r.Cookies() {
 		if cookie.Name == app.auth.CookieName {
-			claims := &Claims{}
+			claims := &auth.Claims{}
 			refreshToken := cookie.Value
 
 			// parse the token to get the claims
@@ -222,7 +223,7 @@ func (app *application) refreshToken(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			u := jwtUser{
+			u := auth.JwtUser{
 				ID:        user.ID,
 				UserName:  user.UserName,
 				FirstName: user.FirstName,
