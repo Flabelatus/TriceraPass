@@ -1,4 +1,5 @@
-package main
+// Package main provides functionalities for handling authentication and token management.
+package auth
 
 import (
 	"errors"
@@ -11,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Auth handles the configuration needed for authentication.
 type Auth struct {
 	Issuer        string
 	Audience      string
@@ -22,46 +24,32 @@ type Auth struct {
 	CookiePath    string
 }
 
-// var BlackList map[string]struct{}
-var BlackList []string
-
-type jwtUser struct {
+// jwtUser represents a user and their associated JWT claims.
+type JwtUser struct {
 	ID        string `json:"id"`
 	FirstName string `json:"first_name"`
 	UserName  string `json:"username"`
 	LastName  string `json:"last_name"`
 }
 
+// TokenPairs represents the access and refresh tokens.
 type TokenPairs struct {
 	Token        string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
 
+// Claims represents the JWT claims for the user.
 type Claims struct {
 	jwt.RegisteredClaims
 }
 
+// generateTokenID generates a new unique token ID.
 func generateTokenID() string {
 	return uuid.NewString()
 }
 
-// func (j *Auth) extractTokenID(token *jwt.Token) string {
-// 	claims, ok := token.Claims.(jwt.MapClaims)
-// 	if !ok {
-// 		fmt.Println("invalid claims while extracting tokenID claims")
-// 		return ""
-// 	}
-
-// 	tokenID, ok := claims["jti"].(string)
-// 	if !ok {
-// 		fmt.Println("invalid token while extracting tokenID")
-// 		return ""
-// 	}
-
-// 	return tokenID
-// }
-
-func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
+// GenerateTokenPair generates an access and refresh token pair for the given user.
+func (j *Auth) GenerateTokenPair(user *JwtUser) (TokenPairs, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	tokenID := generateTokenID()
 
@@ -98,6 +86,7 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	if err != nil {
 		return TokenPairs{}, err
 	}
+
 	var tokenPairs = TokenPairs{
 		Token:        signedAccessToken,
 		RefreshToken: signedRefreshToken,
@@ -105,51 +94,7 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	return tokenPairs, nil
 }
 
-// func (j *Auth) validateToken(tokenString string) (*jwt.Token, error) {
-// 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-// 		return []byte(j.Secret), nil
-// 	})
-// 	if err != nil || !token.Valid {
-// 		return nil, fmt.Errorf("invalid token")
-// 	}
-
-// 	claims, ok := token.Claims.(jwt.MapClaims)
-// 	if !ok {
-// 		return nil, fmt.Errorf("invalid token claims")
-// 	}
-
-// 	tokenID := claims["jti"].(string)
-
-// 	if j.isTokenBlackListed(tokenID) {
-// 		return nil, fmt.Errorf("revoked token--")
-// 	}
-
-// 	return token, nil
-// }
-
-// func (j *Auth) isTokenBlackListed(tokenID string) bool {
-// 	// if _, ok := BlackList[tokenID]; ok {
-// 	// 	fmt.Println(BlackList[tokenID])
-// 	// 	return true
-// 	// } else {
-// 	// 	return false
-// 	// }
-// 	for _, token := range BlackList {
-// 		if token == tokenID {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
-// func addToBlackList(tokenID string) {
-// 	if BlackList == nil {
-// 		BlackList = make([]string, 0)
-// 	}
-// 	// add the tokenID to the blacklist set
-// 	BlackList = append(BlackList, tokenID)
-// }
-
+// GetRefreshCookie returns an HTTP cookie for the refresh token.
 func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	return &http.Cookie{
 		Name:     j.CookieName,
@@ -164,6 +109,7 @@ func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
 	}
 }
 
+// GetExpiredRefreshCookie returns an HTTP cookie that is immediately expired.
 func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	return &http.Cookie{
 		Name:     j.CookieName,
@@ -178,6 +124,7 @@ func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	}
 }
 
+// GetTokenFromHeaderAndVerify retrieves a token from the Authorization header and verifies it.
 func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Request) (string, *Claims, error) {
 	w.Header().Add("Vary", "Authorization")
 	// get the auth header
@@ -191,7 +138,7 @@ func (j *Auth) GetTokenFromHeaderAndVerify(w http.ResponseWriter, r *http.Reques
 	// split the header on spaces
 	headerParts := strings.Split(authHeader, " ")
 	if len(headerParts) != 2 {
-		return "", nil, errors.New("invalud auth header")
+		return "", nil, errors.New("invalid auth header")
 	}
 
 	if headerParts[0] != "Bearer" {
