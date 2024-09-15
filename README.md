@@ -2,7 +2,7 @@
 
 This project is a **Golang-based Authentication Service** API designed to provide user authentication and authorization functionality. It offers a set of RESTful endpoints to handle user login, registration, token management, password reset, and more. It also includes support for user profile management and image uploads.
 
-<img src="./template/docs/assets/img/logo.png" alt="Project Logo" width="300" height="300" style="background-color:#e8febd;">
+<img src="./template/docs/assets/img/logo.png" alt="Project Logo" width="300" height="300">
 
 ## Features
 
