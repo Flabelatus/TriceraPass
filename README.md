@@ -2,6 +2,8 @@
 
 This project is a **Golang-based Authentication Service** API designed to provide user authentication and authorization functionality. It offers a set of RESTful endpoints to handle user login, registration, token management, password reset, and more. It also includes support for user profile management and image uploads.
 
+<img src="./template/docs/assets/img/logo.png" alt="Project Logo" width="300" height="300" style="background-color:#e8febd;">
+
 ## Features
 
 - User registration and login
@@ -12,6 +14,40 @@ This project is a **Golang-based Authentication Service** API designed to provid
 - Configurable via `settings.yml`
 - CORS and middleware for secure and robust routing
 - Uses PostgreSQL as the database
+
+#### Project tree structure
+    
+    .
+    ├── Dockerfile
+    ├── LICENSE
+    ├── README.md
+    ├── cmd
+    │   └── api
+    │       ├── Auth.go
+    │       ├── config.go
+    │       ├── httpHandlersAuth.go
+    │       ├── httpHandlersImage.go
+    │       ├── httpHandlersUser.go
+    │       ├── main.go
+    │       ├── middleware.go
+    │       ├── routes.go
+    │       └── utils.go
+    ├── docker-compose.docker.yml
+    ├── docker-compose.yml
+    ├── internal
+    │   ├── controllers
+    │   │   ├── mailgun.go
+    │   │   └── userController.go
+    │   ├── models
+    │   │   ├── Image.go
+    │   │   └── Users.go
+    │   └── repositories
+    │       ├── Image.go
+    │       ├── ORMRepo.go
+    │       └── Users.go
+    ├── serveDocs.go
+    └── settings.yml
+
 
 ## Table of Contents
 
