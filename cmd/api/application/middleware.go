@@ -15,11 +15,20 @@ type contextKey string
 
 const userContextKey contextKey = "userID"
 
+// EnableCORS is a middleware function that enables Cross-Origin Resource Sharing (CORS).
+// It loads allowed origins from the environment file and applies the appropriate headers
+// for incoming requests. The function also handles preflight (OPTIONS) requests.
+//
+// Parameters:
+// - h: The next HTTP handler to call after processing the CORS headers.
+//
+// Returns:
+// - http.Handler: The middleware handler that processes CORS and calls the next handler.
 func (app *Application) EnableCORS(h http.Handler) http.Handler {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(fmt.Printf("Can not locate the env file: %v", err))
+		log.Fatal(fmt.Printf("Cannot locate the env file: %v", err))
 	}
 
 	allowedOrigins := os.Getenv("CORS")
@@ -37,8 +46,6 @@ func (app *Application) EnableCORS(h http.Handler) http.Handler {
 				fmt.Println(url)
 				w.Header().Set("Access-Control-Allow-Origin", url)
 			}
-			// w.Header().Set("Access-Control-Allow-Origin", origin)
-			// w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
 
 		if r.Method == "OPTIONS" {
@@ -53,6 +60,15 @@ func (app *Application) EnableCORS(h http.Handler) http.Handler {
 	})
 }
 
+// AuthRequired is a middleware function that checks if a request is authenticated.
+// It verifies the JWT token from the Authorization header, extracts the user ID,
+// and stores it in the request context for further processing.
+//
+// Parameters:
+// - next: The next HTTP handler to call after authentication succeeds.
+//
+// Returns:
+// - http.Handler: The middleware handler that checks authentication and calls the next handler.
 func (app *Application) AuthRequired(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userID, _, err := app.Auth.GetTokenFromHeaderAndVerify(w, r)
@@ -67,38 +83,52 @@ func (app *Application) AuthRequired(next http.Handler) http.Handler {
 	})
 }
 
-// func (app *application) adminRequired(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		_, claims, err := app.auth.GetTokenFromHeaderAndVerify(w, r)
-// 		if err != nil {
-// 			w.WriteHeader(http.StatusUnauthorized)
-// 			return
-// 		}
+// AdminRequired is a middleware function that ensures the user has admin privileges.
+// It verifies the JWT token and checks if the user has admin permissions by querying
+// the user's role in the database. If the user is not an admin, it returns a 403 Forbidden status.
+//
+// Parameters:
+// - next: The next HTTP handler to call after admin authorization succeeds.
+//
+// Returns:
+// - http.Handler: The middleware handler that checks for admin privileges and calls the next handler.
+func (app *Application) AdminRequired(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, claims, err := app.Auth.GetTokenFromHeaderAndVerify(w, r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
 
-// 		isAdmin, err := app.isUserAdmin(claims.Subject)
-// 		if err != nil {
-// 			w.WriteHeader(http.StatusInternalServerError)
-// 			return
-// 		}
+		isAdmin, err := app.IsUserAdmin(claims.Subject)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-// 		if !isAdmin {
-// 			w.WriteHeader(http.StatusForbidden)
-// 			return
-// 		}
+		if !isAdmin {
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
 
-// 		next.ServeHTTP(w, r)
-// 	})
-// }
+		next.ServeHTTP(w, r)
+	})
+}
 
-// // Helper function to check if the user is an admin
-// func (app *application) isUserAdmin(userID string) (bool, error) {
-// 	IntegerUserID, err := strconv.Atoi(userID)
-// 	if err != nil {
-// 		return false, err
-// 	}
-// 	user, err := app.Repository.GetUserByID(uint(IntegerUserID))
-// 	if err != nil {
-// 		return false, err
-// 	}
-// 	return user.Mode.Name == "admin", nil
-// }
+// IsUserAdmin checks if a user has admin privileges based on their user ID.
+// It retrieves the user's information from the database and checks their role.
+//
+// Parameters:
+// - userID: The ID of the user whose role is being checked.
+//
+// Returns:
+// - bool: True if the user is an admin, false otherwise.
+// - error: An error if the user could not be retrieved from the database.
+func (app *Application) IsUserAdmin(userID string) (bool, error) {
+
+	user, err := app.Repository.GetUserByID(userID)
+	if err != nil {
+		return false, err
+	}
+	return user.Mode.Name == "admin", nil
+}
