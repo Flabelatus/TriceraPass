@@ -40,10 +40,18 @@ func openBrowser(url string) {
 	}
 }
 
+func startGodoc() {
+	err := exec.Command("godoc", "-http", ":6060").Start()
+	if err != nil {
+		log.Printf("Failed to execute the godoc command: %v", err)
+	}
+}
+
 // Serve static files from the specified directory
 // This is the entry point of the program
 // Get the current directory where the HTML documentation is located
-func ServeDocs() {
+func main() {
+	startGodoc()
 	dir := getWorkingDir()
 
 	documentation := filepath.Join(dir, "template", "docs")
