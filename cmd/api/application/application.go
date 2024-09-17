@@ -1,3 +1,8 @@
+// Package application provides the core structure and configuration for the
+// application. It defines essential components such as database repositories,
+// authentication settings, and application-wide dependencies. This package acts
+// as the foundation for coordinating interactions between different parts of the API,
+// including the server, handlers, and business logic.
 package application
 
 import (

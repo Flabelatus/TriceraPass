@@ -1,3 +1,6 @@
+// Package main provides the core application logic and configuration for the API.
+// It includes the structure and setup for application-wide components such as
+// authentication, database access, and server configuration.
 package main
 
 import (

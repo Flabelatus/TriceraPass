@@ -1,3 +1,7 @@
+// Package controllers provides core business logic for managing user operations,
+// including password hashing, sending emails, and other related functions.
+// It serves as the intermediate layer between the repository and handler layers,
+// handling the logic that coordinates user data and processes.
 package controllers
 
 import (

@@ -1,3 +1,6 @@
+// Package utils provides utility functions for common operations
+// such as reading and writing JSON responses, error handling, and other
+// helper methods that are reused across different parts of the application.
 package utils
 
 import (

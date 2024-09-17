@@ -1,3 +1,6 @@
+// Package server sets up the HTTP server and routing for the application.
+// It defines routes, middleware, and server configurations to handle incoming
+// requests and route them to the appropriate handler functions.
 package server
 
 import (

@@ -1,3 +1,7 @@
+// Package handlers contains the HTTP handler functions responsible for
+// processing incoming HTTP requests and returning appropriate responses.
+// Handlers bridge the gap between the routing logic and the core application logic,
+// and interact with services, repositories, and utilities.
 package handlers
 
 import (
