@@ -1,12 +1,15 @@
 package main
 
 import (
+	"TriceraPass/cmd/api/application"
 	"TriceraPass/cmd/api/auth"
+	"TriceraPass/cmd/api/server"
 	"TriceraPass/internal/repositories"
+	"net/http"
+
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
@@ -15,31 +18,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func init() {
-
-}
-
-// Main Application Config
-
-type application struct {
-	DSN          string
-	Domain       string
-	Repository   *repositories.GORMRepo
-	auth         auth.Auth
-	JWTSecret    string
-	JWTAudience  string
-	JWTIssuer    string
-	CookieDomain string
-	// APIKey       string
-}
-
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(fmt.Printf("Can not locate the env file: %v", err))
 	}
 
-	var app application
+	var app application.Application
 
 	// Load the settings
 	confFile := os.Getenv("CONFIG_FILE")
@@ -47,7 +32,7 @@ func main() {
 		confFile = "./settings.yml"
 	}
 
-	config, err := loadConfig(confFile)
+	config, err := application.LoadConfig(confFile)
 	if err != nil {
 		log.Fatal(fmt.Printf("Error loading configuration: %v", err))
 	}
@@ -81,7 +66,7 @@ func main() {
 	app.Repository = &repositories.GORMRepo{}
 
 	// Initiate the auth object
-	app.auth = auth.Auth{
+	app.Auth = auth.Auth{
 		Issuer:        app.JWTIssuer,
 		Audience:      app.JWTAudience,
 		Secret:        app.JWTSecret,
@@ -114,9 +99,10 @@ func main() {
 
 	// Starting the webserver
 	log.Printf("Starting the application on port: %v", config.Server.Port)
-	err = http.ListenAndServe(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port), app.routes())
+	err = http.ListenAndServe(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port), server.Routes(&app))
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
+
 }

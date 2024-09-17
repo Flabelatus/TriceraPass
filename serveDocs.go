@@ -43,7 +43,7 @@ func openBrowser(url string) {
 // Serve static files from the specified directory
 // This is the entry point of the program
 // Get the current directory where the HTML documentation is located
-func main() {
+func ServeDocs() {
 	dir := getWorkingDir()
 
 	documentation := filepath.Join(dir, "template", "docs")

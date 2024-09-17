@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"context"
@@ -15,7 +15,7 @@ type contextKey string
 
 const userContextKey contextKey = "userID"
 
-func (app *application) enableCORS(h http.Handler) http.Handler {
+func (app *Application) EnableCORS(h http.Handler) http.Handler {
 
 	err := godotenv.Load()
 	if err != nil {
@@ -53,9 +53,9 @@ func (app *application) enableCORS(h http.Handler) http.Handler {
 	})
 }
 
-func (app *application) authRequired(next http.Handler) http.Handler {
+func (app *Application) AuthRequired(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		userID, _, err := app.auth.GetTokenFromHeaderAndVerify(w, r)
+		userID, _, err := app.Auth.GetTokenFromHeaderAndVerify(w, r)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			return

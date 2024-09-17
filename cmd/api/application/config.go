@@ -1,4 +1,12 @@
-package main
+package application
+
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"gopkg.in/yaml.v2"
+)
 
 // Config schema from settings.yml
 type Config struct {
@@ -52,4 +60,28 @@ type Config struct {
 		BodyBackground   string `yaml:"body_background"`
 		HeaderFontSize   string `yaml:"header_font_size"`
 	} `yaml:"styles"`
+}
+
+// Load settings.yml and parse into the Config struct
+func LoadConfig(configFile string) (*Config, error) {
+	config := &Config{}
+	data, err := os.ReadFile(configFile)
+	if err != nil {
+		return nil, fmt.Errorf("could not read config file: %w", err)
+	}
+	err = yaml.Unmarshal(data, config)
+	if err != nil {
+		return nil, fmt.Errorf("could not parse config file: %w", err)
+	}
+	return config, nil
+}
+
+// Helper function to check if the origin is allowed
+func isOriginAllowed(origin string, allowedOrigins []string) bool {
+	for _, allowed := range allowedOrigins {
+		if strings.TrimSpace(allowed) == origin {
+			return true
+		}
+	}
+	return false
 }

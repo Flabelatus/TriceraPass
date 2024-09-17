@@ -1,10 +1,10 @@
 package repositories
 
 import (
+	"TriceraPass/cmd/api/controllers"
+	"TriceraPass/internal/models"
 	"errors"
 	"fmt"
-	"TriceraPass/internal/controllers"
-	"TriceraPass/internal/models"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
