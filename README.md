@@ -18,46 +18,46 @@ This project is a **Golang-based Authentication Service** API designed to provid
 #### Project tree structure
     
     .
-├── cmd
-│   └── api
-│       ├── application
-│       │   ├── application.go
-│       │   ├── config.go
-│       │   └── middleware.go
-│       ├── auth
-│       │   └── Auth.go
-│       ├── controllers
-│       │   ├── mailgun.go
-│       │   ├── userController.go
-│       │   └── userController_test.go
-│       ├── main.go
-│       ├── server
-│       │   ├── handlers
-│       │   │   ├── httpHandlersAuth.go
-│       │   │   ├── httpHandlersImage.go
-│       │   │   └── httpHandlersUser.go
-│       │   └── routes.go
-│       └── utils
-│           └── utils.go
-├── internal
-│   ├── models
-│   │   ├── Image.go
-│   │   └── Users.go
-│   └── repositories
-│       ├── Image.go
-│       ├── ORMRepo.go
-│       └── Users.go
-├── serveDocs.go
-├── Dockerfile
-├── LICENSE
-├── README.md
-├── docker-compose.docker.yml
-├── docker-compose.yml
-├── settings.yml
-├── run.sh
-├── unmount_db.sh
-├── generate-env.sh
-└── wait-for-it.sh
+    ├── cmd
+    │   └── api
+    │       ├── application
+    │       │   ├── application.go
+    │       │   ├── config.go
+    │       │   └── middleware.go
+    │       ├── auth
+    │       │   └── Auth.go
+    │       ├── controllers
+    │       │   ├── mailgun.go
+    │       │   ├── userController.go
+    │       │   └── userController_test.go
+    │       ├── main.go
+    │       ├── server
+    │       │   ├── handlers
+    │       │   │   ├── httpHandlersAuth.go
+    │       │   │   ├── httpHandlersImage.go
+    │       │   │   └── httpHandlersUser.go
+    │       │   └── routes.go
+    │       └── utils
+    │           └── utils.go
+    ├── internal
+    │   ├── models
+    │   │   ├── Image.go
+    │   │   └── Users.go
+    │   └── repositories
+    │       ├── Image.go
+    │       ├── ORMRepo.go
+    │       └── Users.go
+    ├── serveDocs.go
+    ├── Dockerfile
+    ├── LICENSE
+    ├── README.md
+    ├── docker-compose.docker.yml
+    ├── docker-compose.yml
+    ├── settings.yml
+    ├── run.sh
+    ├── unmount_db.sh
+    ├── generate-env.sh
+    └── wait-for-it.sh
 
 
 ## Table of Contents
