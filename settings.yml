@@ -14,7 +14,7 @@ api:
     # The context of the api refers to the location where the auth-service is located
     # This would be only used when you want to run your data-service, auth-service and the application
     # inside the same docker container
-    context: ../../golangProjects/authService
+    context: <path/to/your/context>
 
 # The application you want to connect to the auth-service
 custom_service:
@@ -23,7 +23,7 @@ custom_service:
   container_name: custom-app
   build:
     # The context of the custom_service refers to the location where the your custom application is located
-    context: ../../pythonProjects/cw4.0
+    context: <path/to/your/context>
     dockerfile: Dockerfile
   # Ports mapping for the docker image of your application
   ports: "5050:5000"
