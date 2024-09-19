@@ -9,6 +9,24 @@ api:
   rate_limiting:
     requests_per_minute: 100
     burst: 50
+  build:
+    # Custom path to define where the context of the docker-compose is to include all services
+    # The context of the api refers to the location where the auth-service is located
+    # This would be only used when you want to run your data-service, auth-service and the application
+    # inside the same docker container
+    context: ../../golangProjects/authService
+
+# The application you want to connect to the auth-service
+custom_service:
+  # Setup for the docker-compose.docker.yml file to integrate the
+  # custom-service, auth-service and data-service in the same docker container
+  container_name: custom-app
+  build:
+    # The context of the custom_service refers to the location where the your custom application is located
+    context: ../../pythonProjects/cw4.0
+    dockerfile: Dockerfile
+  # Ports mapping for the docker image of your application
+  ports: "5050:5000"
 
 application:  
   client_name: jurassic_login_park_dino_auth_division

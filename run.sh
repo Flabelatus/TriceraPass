@@ -1,12 +1,35 @@
 #!/bin/bash
 
 # Function to display usage
-usage() {
-    echo "Usage: $0 [--docker]"
-    echo "  --docker  Run the app in Docker containers"
-    echo "  If no flag is provided, the app will be run locally."
-    exit 1
+usage(){
+  echo "Usage: ./run.sh [OPTIONS]"
+  echo ""
+  echo "Options:"
+  echo "  --containerize       Run the services all within one docker container"
+  echo "  --help               Display this help message"
+  echo ""
+  echo "The --containerize flag runs the auth-service, data-service and your custom application
+  inside a Docker container, setting up the network and environment needed for your application."
 }
+
+CONTAINERIZE=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --containerize)
+      CONTAINERIZE=true
+      shift
+      ;;
+    --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Error: Unknown flag '$1'. Use --help for usage information."
+      exit 1
+      ;;
+  esac
+done
 
 # Check if curl is installed
 if ! command -v curl >/dev/null 2>&1; then
@@ -15,7 +38,7 @@ if ! command -v curl >/dev/null 2>&1; then
 fi
 
 # Create the .env file 
-if [ "$1" == "--docker" ]; then
+if [[ "$CONTAINERIZE" == true ]]; then
   echo "Generating .env file from settings.yml for docker instance... "
   ./generate-env.sh --docker
 else
@@ -48,7 +71,7 @@ if [ ! -f ./wait-for-it.sh ]; then
 fi
 
 # Check for flags
-if [ "$1" == "--docker" ]; then
+if [[ "$CONTAINERIZE" == true ]]; then
     # Run with Docker
     echo "Running both services in Docker..."
     docker-compose down

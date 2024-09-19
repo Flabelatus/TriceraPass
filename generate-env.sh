@@ -2,6 +2,10 @@
 
 SETTINGS_FILE="./settings.yml"
 POSTGRES_HOST="localhost"
+API_BUILD_CONTEXT=""
+CUSTOM_SERVICE_BUILD_CONTEXT=""
+CUSTOM_SERVICE_CONTAINER_NAME=""
+CUSTOM_SERVICE_PORTS=""
 
 # Install yq based on the operating system
 install_yq() {
@@ -39,6 +43,10 @@ fi
 # Check if the --docker flag is passed
 if [[ "$1" == "--docker" ]]; then
   POSTGRES_HOST="postgres"
+  API_BUILD_CONTEXT=$(yq e '.api.build.context' $SETTINGS_FILE)
+  CUSTOM_SERVICE_BUILD_CONTEXT=$(yq e '.custom_service.build.context' $SETTINGS_FILE)
+  CUSTOM_SERVICE_CONTAINER_NAME=$(yq e '.custom_service.container_name' $SETTINGS_FILE)
+  CUSTOM_SERVICE_PORTS=$(yq e '.custom_service.ports' $SETTINGS_FILE)
 fi
 
 # Extracting other settings
@@ -60,6 +68,10 @@ CORS=$(yq e '.api.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
 
 # Generate the .env file
 cat > .env <<EOL
+API_BUILD_CONTEXT=$API_BUILD_CONTEXT
+CUSTOM_SERVICE_BUILD_CONTEXT=$CUSTOM_SERVICE_BUILD_CONTEXT
+CUSTOM_SERVICE_CONTAINER_NAME=$CUSTOM_SERVICE_CONTAINER_NAME
+CUSTOM_SERVICE_PORTS=$CUSTOM_SERVICE_PORTS
 POSTGRES_HOST=$POSTGRES_HOST
 POSTGRES_USER=$POSTGRES_USER
 POSTGRES_PASSWORD=$POSTGRES_PASSWORD

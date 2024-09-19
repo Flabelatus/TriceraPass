@@ -7,7 +7,8 @@ services:
       - api-network
     build:
       # context: ../../pythonProjects/CircularWood_4.0_WP1
-      context: ../../golangProjects/authService
+      # context: ../../golangProjects/authService
+      context: ${API_BUILD_CONTEXT}
       dockerfile: Dockerfile
     environment:
       - DB_HOST=postgres
@@ -19,13 +20,13 @@ services:
     depends_on:
       - postgres
 
-  wood-api:
-    container_name: wood-api
+  custom-service:
+    container_name: ${CUSTOM_SERVICE_CONTAINER_NAME}
     build:
-      context: ../../pythonProjects/cw4.0
+      context: ${CUSTOM_SERVICE_BUILD_CONTEXT}
       dockerfile: Dockerfile
     ports:
-      - "5050:5000"
+      - ${CUSTOM_SERVICE_PORTS}
     depends_on:
       - auth-service
     networks:
