@@ -380,8 +380,8 @@ func RegisterNewUser(app *application.Application) http.HandlerFunc {
 		}
 
 		// Send confirmation email via Mailgun
-		apiKey := os.Getenv("MAILGUN_API_KEY")
-		domain := os.Getenv("MAILGUN_DOMAIN")
+		apiKey := os.Getenv("MAIL_SERVER_API_KEY")
+		domain := os.Getenv("MAIL_SERVER_DOMAIN")
 
 		_, err = controllers.SendEmail(domain, apiKey, newUser.Email, newUser.UserName, userID, "confirmation", 1)
 		if err != nil {
