@@ -2,7 +2,6 @@ package repositories
 
 import "TriceraPass/internal/models"
 
-
 func (r *GORMRepo) InsertProfileImage(image *models.ProfileImage) (*models.ProfileImage, error) {
 	result := r.DB.Create(&image)
 	if result.Error != nil {
