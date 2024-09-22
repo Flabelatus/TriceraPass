@@ -68,5 +68,21 @@ func Routes(app *application.Application) http.Handler {
 		mux.Post("/upload/profile", handlers.UploadProfileImage(app)) // Upload user profile image
 	})
 
+	mux.Route("/auth/api/admin", func(mux chi.Router) {
+		mux.Use(app.AdminRequired) // Middleware to require admin user level
+
+		mux.Get("/user/modes", handlers.GetAllUserModes(app)) // Get all the user modes
+		mux.Get("/users", handlers.GetAllUsers(app))          // Get all the users data
+
+		mux.Post("/user/mode", handlers.CreateUserMode(app)) // Create a user mode via admin
+
+		mux.Patch("/user/mode/{mode_id}", handlers.UpdateUserMode(app)) // Update the user mode
+
+		mux.Delete("/users", handlers.AdminDeleteAllUsers(app))          // Delete all the users
+		mux.Delete("/user/{user_id}", handlers.AdminDeleteUserByID(app)) // Logout route
+		mux.Delete("/user/mode/{mode_id}", handlers.DeleteUserMode(app)) // Delete a user mode via admin
+
+	})
+
 	return mux
 }
