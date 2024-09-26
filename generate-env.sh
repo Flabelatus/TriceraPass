@@ -66,6 +66,8 @@ AUTH_SERVICE_PORT=$(yq e '.server.port' $SETTINGS_FILE)
 # Extract allowed_origins and join them into a single line separated by commas
 CORS=$(yq e '.api.allowed_origins[]' $SETTINGS_FILE | paste -sd "," -)
 
+LOGGING_LEVEL=$(yq e '.logging.level' $SETTINGS_FILE | paste -sd "," -)
+
 # Generate the .env file
 cat > .env <<EOL
 API_BUILD_CONTEXT=$API_BUILD_CONTEXT
@@ -82,6 +84,7 @@ MAIL_SERVER_NAME=$MAIL_SERVER_NAME
 MAIL_SERVER_API_KEY=$MAIL_SERVER_API_KEY
 MAIL_SERVER_DOMAIN=$MAIL_SERVER_DOMAIN
 CORS=$CORS
+LOGGING_LEVEL=$LOGGING_LEVEL
 EOL
 
 echo ".env file has been generated from settings.yml"
