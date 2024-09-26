@@ -5,9 +5,21 @@ import (
 	"TriceraPass/cmd/api/utils"
 	"TriceraPass/internal/models"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 )
+
+type UserDataAsAdmin struct {
+	ID        string      `gorm:"type:uuid;primary_key"`
+	CreatedAt time.Time   `json:"created_at"`
+	DeletedAt time.Time   `json:"deleted_at"`
+	UserName  string      `json:"username"`
+	FirstName string      `json:"first_name"`
+	LastName  string      `json:"last_name"`
+	Email     string      `json:"email"`
+	Mode      models.Mode `gorm:"foreignKey:UserID" json:"mode,omitempty"`
+}
 
 func AdminDeleteAllUsers(app *application.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -58,23 +70,33 @@ func AdminCreateUser(app *application.Application) http.HandlerFunc {
 // - http.HandlerFunc: An HTTP handler function that fetches and returns all users.
 func GetAllUsers(app *application.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		errChan := make(chan error)
-		uChan := make(chan []models.User)
-
-		go func() {
-			users, err := app.Repository.GetAllUsers()
-			if err != nil {
-				errChan <- err
-			} else {
-				uChan <- users
-			}
-		}()
-
-		select {
-		case users := <-uChan:
-			_ = utils.WriteJSON(w, http.StatusOK, users)
-		case err := <-errChan:
+		users, err := app.Repository.GetAllUsers()
+		if err != nil {
 			utils.ErrorJSON(w, err)
+			return
 		}
+
+		var usersInResponse []UserDataAsAdmin
+
+		for _, u := range users {
+			userInResponse := UserDataAsAdmin{
+				ID:        u.ID,
+				CreatedAt: u.CreatedAt,
+				DeletedAt: u.DeletedAt,
+				UserName:  u.UserName,
+				FirstName: u.FirstName,
+				LastName:  u.LastName,
+				Email:     u.Email,
+				Mode:      u.Mode,
+			}
+
+			usersInResponse = append(usersInResponse, userInResponse)
+		}
+
+		response := utils.JSONResponse{
+			Data: usersInResponse,
+		}
+
+		_ = utils.WriteJSON(w, http.StatusOK, response)
 	}
 }
