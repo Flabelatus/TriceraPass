@@ -247,11 +247,27 @@ func RegisterNewUser(app *application.Application) http.HandlerFunc {
 			return
 		}
 
+		users, err := app.Repository.GetAllUsers()
+		if err != nil {
+			utils.ErrorJSON(w, err)
+			return
+		}
+
+		var modeName string
+
+		if len(users) > 1 {
+			modeName = "default"
+
+		} else {
+			modeName = "admin"
+		}
+
 		// Create a mode record for the user
 		userMode := models.Mode{
-			Name:   "1212",
+			Name:   modeName,
 			UserID: newUser.ID,
 		}
+
 		err = app.Repository.CreateMode(&userMode)
 		if err != nil {
 			utils.ErrorJSON(w, err)
