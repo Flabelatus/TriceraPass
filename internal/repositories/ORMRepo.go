@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type GORMRepo struct {
@@ -23,5 +24,8 @@ func (repo *GORMRepo) Migrate() error {
 	if err != nil {
 		return err
 	}
+
+	_ = repo.DB.Logger.LogMode(logger.Info)
+
 	return nil
 }
