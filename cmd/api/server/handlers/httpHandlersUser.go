@@ -198,3 +198,37 @@ func Updateuser(app *application.Application) http.HandlerFunc {
 		_ = utils.WriteJSON(w, http.StatusOK, response)
 	}
 }
+
+func DeleteOwnUserData(app *application.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Get the identity from jwt claims
+		_, claims, err := app.Auth.GetTokenFromHeaderAndVerify(w, r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+
+		userID := claims.Subject
+
+		// Get the user based on the user_id in the url params
+		userIdFromUrl := chi.URLParam(r, "user_id")
+
+		if userID != userIdFromUrl {
+			utils.ErrorJSON(w, errors.New("the user id does not match with your identity"))
+			return
+		}
+
+		// Delete the user (this will also delete the associated Mode due to cascading)
+		err = app.Repository.DeleteUserByID(userID)
+		if err != nil {
+			utils.ErrorJSON(w, err)
+			return
+		}
+
+		resp := utils.JSONResponse{
+			Data: "Successfully deleted the user and the associated mode",
+		}
+
+		_ = utils.WriteJSON(w, http.StatusAccepted, resp)
+	}
+}

@@ -66,6 +66,8 @@ func Routes(app *application.Application) http.Handler {
 
 		// Profile image upload
 		mux.Post("/upload/profile", handlers.UploadProfileImage(app)) // Upload user profile image
+
+		mux.Delete("/user/{user_id}", handlers.DeleteOwnUserData(app))
 	})
 
 	mux.Route("/auth/api/admin", func(mux chi.Router) {
