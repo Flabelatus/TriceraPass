@@ -1,6 +1,13 @@
 package controllers
 
 import (
+	"fmt"
+	"io"
+	"io/fs"
+	"math/rand"
+	"os"
+	"path/filepath"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -36,4 +43,86 @@ func VerifyPasswordNonDuplicate(oldPassword, newPassword string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func SelectRandomDefaultProfileImage(defaultDirPath string) (string, error) {
+
+	pathToImages := fmt.Sprintf("%s/static/default", defaultDirPath)
+	files, err := os.ReadDir(pathToImages)
+	if err != nil {
+		return "", err
+	}
+
+	RandomIndex := rand.Intn(len(files))
+	selectedImage := files[RandomIndex]
+
+	ImagePath := fmt.Sprintf("%s/%s", pathToImages, selectedImage.Name())
+
+	// Return the picked image for the profile picture
+	return ImagePath, nil
+}
+
+func UploadDefaultProfile(rootDir, userID string) (string, string, error) {
+
+	// Default path for profile pictures
+	directoryPath := fmt.Sprintf("%s/static/profile", rootDir)
+
+	// Create a default profile image
+	imagePath, err := SelectRandomDefaultProfileImage(rootDir)
+	if err != nil {
+		return "", "", err
+	}
+
+	filename := userID + filepath.Ext(imagePath)
+
+	// Ensure the directory exists
+	err = os.MkdirAll(directoryPath, fs.ModePerm)
+	if err != nil {
+		return "", "", err
+	}
+
+	profilePath := fmt.Sprintf("%s/%s", directoryPath, filename)
+
+	newFile, err := os.Create(profilePath)
+	if err != nil {
+		return "", "", err
+	}
+	defer newFile.Close()
+
+	file, err := os.Open(imagePath)
+	if err != nil {
+		return "", "", fmt.Errorf("error: file could not be opened: %v", err)
+	}
+	defer file.Close()
+
+	_, err = io.Copy(newFile, file)
+	if err != nil {
+		return "", "", fmt.Errorf("error: contents could not be copied: %v", err)
+	}
+
+	return filename, profilePath, nil
+}
+
+func DeleteProfileImageFile(rootDir, userID string) error {
+	profileImagePath := fmt.Sprintf("%s/static/profile", rootDir)
+	profileImageDir, err := os.ReadDir(profileImagePath)
+	if err != nil {
+		return err
+	}
+
+	ArbitraryPath := profileImageDir[0].Name()
+
+	// Concatenate the user ID with the extension of a image file
+	filename := userID + filepath.Ext(ArbitraryPath)
+
+	for _, fp := range profileImageDir {
+		if fp.Name() == filename {
+			err = os.Remove(fmt.Sprintf("%s/%s", profileImagePath, fp.Name()))
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }

@@ -1,6 +1,8 @@
 package repositories
 
-import "TriceraPass/internal/models"
+import (
+	"TriceraPass/internal/models"
+)
 
 func (r *GORMRepo) InsertProfileImage(image *models.ProfileImage) (*models.ProfileImage, error) {
 	result := r.DB.Create(&image)
@@ -43,6 +45,26 @@ func (r *GORMRepo) DeleteProfileImageByFilename(filename string) error {
 	tx.SavePoint("beforeDeleteImage")
 
 	err = tx.Delete(image, filename).Error
+
+	if err != nil {
+		tx.RollbackTo("beforeDeleteImage")
+		return err
+	}
+
+	return nil
+}
+
+func (r *GORMRepo) DeleteProfileImageByUserID(userID string) error {
+	var image *models.ProfileImage
+	err := r.DB.Where("user_id = ?", userID).First(&image).Error
+	if err != nil {
+		return err
+	}
+
+	tx := r.DB.Begin()
+	tx.SavePoint("beforeDeleteImage")
+
+	err = tx.Where("user_id = ?", userID).Delete(image).Error
 
 	if err != nil {
 		tx.RollbackTo("beforeDeleteImage")
