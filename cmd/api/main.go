@@ -29,6 +29,13 @@ func main() {
 
 	var app application.Application
 
+	rootDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	app.Root = rootDir
+
 	// Load the settings
 	confFile := os.Getenv("CONFIG_FILE")
 	if confFile == "" {
