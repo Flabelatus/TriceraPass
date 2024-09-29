@@ -52,11 +52,23 @@ func (r *GORMRepo) DeleteModeByID(id int) error {
 	}
 
 	tx := r.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	tx.SavePoint("beforeDeleteMode")
+
 	if err := tx.Delete(&mode, "id = ?", id).Error; err != nil {
 		tx.RollbackTo("beforeDeleteMode")
 		return err
 	}
+
+	if err := tx.Commit().Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 

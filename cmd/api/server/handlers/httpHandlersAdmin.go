@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
+// Type to cast for admin user
 type UserDataAsAdmin struct {
 	ID        string      `gorm:"type:uuid;primary_key"`
 	CreatedAt time.Time   `json:"created_at"`

@@ -17,7 +17,7 @@ type User struct {
 	LastName  string    `json:"last_name"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
-	Mode      Mode      `gorm:"foreignKey:UserID" json:"mode,omitempty"`
+	Mode      Mode      `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;" json:"mode,omitempty"`
 }
 
 type Mode struct {
