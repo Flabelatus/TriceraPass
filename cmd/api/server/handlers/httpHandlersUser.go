@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"TriceraPass/cmd/api/application"
+	"TriceraPass/cmd/api/controllers"
 	"TriceraPass/cmd/api/utils"
 	"TriceraPass/internal/models"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -222,6 +224,22 @@ func DeleteOwnUserData(app *application.Application) http.HandlerFunc {
 		err = app.Repository.DeleteUserByID(userID)
 		if err != nil {
 			utils.ErrorJSON(w, err)
+			return
+		}
+
+		// Delete the user's profile image as well from the database
+		err = app.Repository.DeleteProfileImageByUserID(userID)
+		if err != nil {
+			log.Println("Deleting the user profile image from database")
+			utils.ErrorJSON(w, err)
+			return
+		}
+
+		// Delete the image file as well
+		err = controllers.DeleteProfileImageFile(app.Root, userID)
+		if err != nil {
+			log.Println("Deleting the user profile image file")
+			utils.ErrorJSON(w, fmt.Errorf("could not delete the image file: %v", err))
 			return
 		}
 

@@ -21,5 +21,6 @@ type Application struct {
 	JWTAudience  string                 // Audience claim for JWT tokens.
 	JWTIssuer    string                 // Issuer claim for JWT tokens.
 	CookieDomain string                 // Domain used for setting authentication cookies.
+	Root         string                 // Path to the root directory of the project
 	// APIKey     string                // (Optional) API key for external services or further authentication.
 }

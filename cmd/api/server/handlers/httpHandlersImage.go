@@ -97,7 +97,7 @@ func ServeStaticProfileImage(app *application.Application) http.HandlerFunc {
 		}
 
 		// Construct the file path and serve the file
-		staticDir := "./static/profile"
+		staticDir := fmt.Sprintf("%s/static/profile", app.Root)
 		filePath := filepath.Join(staticDir, profileImage.Filename)
 		http.ServeFile(w, r, filePath)
 	}

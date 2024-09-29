@@ -221,6 +221,20 @@ func RegisterNewUser(app *application.Application) http.HandlerFunc {
 			return
 		}
 
+		filename, profilePath, err := controllers.UploadDefaultProfile(app.Root, userID)
+		if err != nil {
+			utils.ErrorJSON(w, err)
+			return
+		}
+
+		// Insert the profile image record into the database
+		image := models.ProfileImage{Filename: filename, FilePath: profilePath, UserID: userID}
+		_, err = app.Repository.InsertProfileImage(&image)
+		if err != nil {
+			utils.ErrorJSON(w, err)
+			return
+		}
+
 		// Return success response with user ID
 		response := utils.JSONResponse{
 			Error:   false,
