@@ -1,4 +1,5 @@
 # Authentication Service API
+[![version](https://img.shields.io/badge/version-v1.0.1-brightgreen)]()
 
 This project is a **Golang-based Authentication Service** API designed to provide user authentication and authorization functionality. It offers a set of RESTful endpoints to handle user login, registration, token management, password reset, and more. It also includes support for user profile management and image uploads.
 
@@ -14,51 +15,6 @@ This project is a **Golang-based Authentication Service** API designed to provid
 - Configurable via `settings.yml`
 - CORS and middleware for secure and robust routing
 - Uses PostgreSQL as the database
-
-#### Project tree structure
-    
-    .
-    ├── cmd
-    │   └── api
-    │       ├── application
-    │       │   ├── application.go
-    │       │   ├── config.go
-    │       │   └── middleware.go
-    │       ├── auth
-    │       │   └── Auth.go
-    │       ├── controllers
-    │       │   ├── mailgun.go
-    │       │   ├── userController.go
-    │       │   └── userController_test.go
-    │       ├── main.go
-    │       ├── server
-    │       │   ├── handlers
-    │       │   │   ├── httpHandlersAuth.go
-    │       │   │   ├── httpHandlersImage.go
-    │       │   │   └── httpHandlersUser.go
-    │       │   └── routes.go
-    │       └── utils
-    │           └── utils.go
-    ├── internal
-    │   ├── models
-    │   │   ├── Image.go
-    │   │   └── Users.go
-    │   └── repositories
-    │       ├── Image.go
-    │       ├── ORMRepo.go
-    │       └── Users.go
-    ├── serveDocs.go
-    ├── Dockerfile
-    ├── LICENSE
-    ├── README.md
-    ├── docker-compose.docker.yml
-    ├── docker-compose.yml
-    ├── settings.yml
-    ├── run.sh
-    ├── unmount_db.sh
-    ├── generate-env.sh
-    └── wait-for-it.sh
-
 
 ## Table of Contents
 
@@ -144,6 +100,7 @@ All configurations are handled via the `settings.yml` file. You need to configur
 
     security:
         jwt:
+            # Only configure on your server
             secret: TRICERATOPLESS-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
             expirationTime: 3600
             issuer: dr-malcom.com
@@ -155,6 +112,7 @@ All configurations are handled via the `settings.yml` file. You need to configur
         output: stdout
 
     database:
+        # Only configure on your server
         type: postgres
         host: localhost
         port: 5432
@@ -205,7 +163,9 @@ All configurations are handled via the `settings.yml` file. You need to configur
 
 The following routes are available in the authentication service. All public routes can be accessed without authentication, while the protected routes require a valid JWT token.
 
-### Public Routes
+## Public Routes
+
+These routes are accessible without authentication.
 
 | Method | Endpoint                                      | Description                                   |
 |--------|-----------------------------------------------|-----------------------------------------------|
@@ -219,22 +179,37 @@ The following routes are available in the authentication service. All public rou
 | `POST` | `/auth/api/send_password_email`               | Send password reset email                     |
 | `POST` | `/auth/api/user/password_reset/{user_id}`     | Change password using user ID                 |
 | `GET`  | `/auth/api/user/password_reset/token/{user_id}` | Fetch password reset token by user ID         |
-| `POST` | `/auth/api/user/password_reset/token/use/{user_id}` | Mark password reset token as used             |
+| `POST` | `/auth/api/user/password_reset/token/use/{user_id}` | Mark password reset token as used         |
 
-### Protected Routes
+## Protected Routes
 
-The following routes require the user to be logged in with a valid JWT token:
+The following routes require authentication (valid JWT token).
 
-| Method | Endpoint                                       | Description                                   |
-|--------|------------------------------------------------|-----------------------------------------------|
-| `POST` | `/auth/api/logged_in/logout`                   | Logout the currently authenticated user       |
-| `GET`  | `/auth/api/logged_in/user/{user_email}`        | Get user details by email                     |
-| `GET`  | `/auth/api/logged_in/user/{user_id}`           | Get user details by user ID                   |
-| `PATCH`| `/auth/api/logged_in/user/{user_id}`           | Update user information                       |
-| `GET`  | `/auth/api/logged_in/user/profile/{filename}`  | Serve static user profile image               |
-| `POST` | `/auth/api/logged_in/upload/profile`           | Upload a new profile image                    |
-| `POST` | `/auth/api/logged_in/user/password_reset/{user_id}` | Reset user password by user ID              |
-| `POST` | `/auth/api/logged_in/user/send_password_email/{user_id}` | Send password reset email to user        |
+| Method  | Endpoint                                           | Description                                   |
+|---------|----------------------------------------------------|-----------------------------------------------|
+| `POST`  | `/auth/api/logged_in/logout`                      | Logout the currently authenticated user       |
+| `GET`   | `/auth/api/logged_in/user/{user_email}`           | Get user details by email                     |
+| `GET`   | `/auth/api/logged_in/user/{user_id}`              | Get user details by user ID                   |
+| `PATCH` | `/auth/api/logged_in/user/{user_id}`              | Update user information                       |
+| `GET`   | `/auth/api/logged_in/user/profile/{filename}`     | Serve static user profile image               |
+| `POST`  | `/auth/api/logged_in/upload/profile`              | Upload a new profile image                    |
+| `POST`  | `/auth/api/logged_in/user/password_reset/{user_id}` | Reset user password by user ID               |
+| `POST`  | `/auth/api/logged_in/user/send_password_email/{user_id}` | Send password reset email to user        |
+| `DELETE`| `/auth/api/logged_in/user/{user_id}`              | Delete own user data                          |
+
+## Admin Routes
+
+These routes require **admin-level authentication**.
+
+| Method  | Endpoint                                           | Description                                   |
+|---------|----------------------------------------------------|-----------------------------------------------|
+| `GET`   | `/auth/api/admin/user/modes`                      | Get all user modes                           |
+| `GET`   | `/auth/api/admin/users`                           | Get all users data                           |
+| `POST`  | `/auth/api/admin/user/mode`                       | Create a new user mode                       |
+| `PATCH` | `/auth/api/admin/user/mode/{mode_id}`             | Update a user mode                           |
+| `DELETE`| `/auth/api/admin/users`                           | Delete all users                             |
+| `DELETE`| `/auth/api/admin/user/{user_id}`                  | Delete a user by ID                          |
+| `DELETE`| `/auth/api/admin/user/mode/{mode_id}`             | Delete a user mode                           |
 
 ---
 

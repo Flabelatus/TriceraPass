@@ -93,7 +93,9 @@
                         </tbody>
                     </table>
                 </section>
+
                 <br />
+
                 <section>
                     <h2>Protected Endpoints</h2>
                     <p>These endpoints require JWT authentication:</p>
@@ -105,7 +107,7 @@
                                 <th scope="col">Description</th>
                             </tr>
                         </thead>
-                        <tbody class="table-dark-">
+                        <tbody>
                             <tr>
                                 <td><span class="method-post px-2 py-1">POST</span></td>
                                 <td><code>/auth/api/logged_in/logout</code></td>
@@ -137,6 +139,11 @@
                                 <td>Upload a new profile image</td>
                             </tr>
                             <tr>
+                                <td><span class="method-delete px-2 py-1">DELETE</span></td>
+                                <td><code>/auth/api/logged_in/user/{user_id}</code></td>
+                                <td>Delete own user data</td>
+                            </tr>
+                            <tr>
                                 <td><span class="method-post px-2 py-1">POST</span></td>
                                 <td><code>/auth/api/logged_in/user/password_reset/{user_id}</code></td>
                                 <td>Reset the user password using user ID</td>
@@ -145,6 +152,59 @@
                                 <td><span class="method-post px-2 py-1">POST</span></td>
                                 <td><code>/auth/api/logged_in/user/send_password_email/{user_id}</code></td>
                                 <td>Send a password reset email to the user</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <br />
+
+                <section>
+                    <h2>Admin Endpoints</h2>
+                    <p>These endpoints require admin-level authentication:</p>
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Method</th>
+                                <th scope="col">Endpoint</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method-get px-2 py-1">GET</span></td>
+                                <td><code>/auth/api/admin/user/modes</code></td>
+                                <td>Retrieve all user modes</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-get px-2 py-1">GET</span></td>
+                                <td><code>/auth/api/admin/users</code></td>
+                                <td>Retrieve all users</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-post px-2 py-1">POST</span></td>
+                                <td><code>/auth/api/admin/user/mode</code></td>
+                                <td>Create a new user mode</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-patch px-2 py-1">PATCH</span></td>
+                                <td><code>/auth/api/admin/user/mode/{mode_id}</code></td>
+                                <td>Update a user mode</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-delete px-2 py-1">DELETE</span></td>
+                                <td><code>/auth/api/admin/users</code></td>
+                                <td>Delete all users</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-delete px-2 py-1">DELETE</span></td>
+                                <td><code>/auth/api/admin/user/{user_id}</code></td>
+                                <td>Delete a user by ID</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method-delete px-2 py-1">DELETE</span></td>
+                                <td><code>/auth/api/admin/user/mode/{mode_id}</code></td>
+                                <td>Delete a user mode</td>
                             </tr>
                         </tbody>
                     </table>
