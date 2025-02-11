@@ -1,37 +1,37 @@
 api:
-  name: tricera_pass_auth_service
-  version: 1.0.0
-  description: "God creates dinosaurs! God destroys dinosaurs! God creates man! Man destroys God! Man creates dinosaurs!"
+  name: ROBOTLAB_AUTH_SERVICE
+  version: 1.0.1
+  description: "Authentication service for the use case in the Robotlab HvA"
   allowed_origins:
     - http://localhost:3000
     - http://localhost:5050
     - https://dr-malcom.com
-  rate_limiting:
-    requests_per_minute: 100
-    burst: 50
+  # rate_limiting:
+  #   requests_per_minute: 100
+  #   burst: 50
   build:
     # Custom path to define where the context of the docker-compose is to include all services
     # The context of the api refers to the location where the auth-service is located
     # This would be only used when you want to run your data-service, auth-service and the application
     # inside the same docker container
-    context: <path/to/your/context>
+    context: .
 
 # The application you want to connect to the auth-service
-custom_service:
+# custom_service:
   # Setup for the docker-compose.docker.yml file to integrate the
   # custom-service, auth-service and data-service in the same docker container
-  container_name: custom-app
-  build:
+  # container_name: custom-app
+  # build:
     # The context of the custom_service refers to the location where the your custom application is located
-    context: <path/to/your/context>
-    dockerfile: Dockerfile
+    # context: <path/to/your/context>
+    # dockerfile: Dockerfile
   # Ports mapping for the docker image of your application
-  ports: "5050:5000"
+  # ports: "5050:5000"
 
 application:  
-  client_name: jurassic_login_park_dino_auth_division
+  client_name: auth_api_v1
   cookie_domain: localhost
-  domain: dr-malcom.com
+  domain: localhost
 
 server:
   port: 1993
@@ -42,21 +42,21 @@ security:
   jwt:
     secret: TRICERATOPLESS-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
     expiration_time: 3600
-    issuer: dr-malcom.com
-    audience: dr-malcom.com
+    issuer: localhost
+    audience: localhost
 
-logging:
-  level: info
-  format: json
-  output: stdout
+# logging:
+#   level: info
+#   format: json
+#   output: stdout
 
 database:
   type: postgres
   host: postgres
   port: 5432
-  user: veloci_raptor
-  password: clever_girl
-  dbname: dino_division
+  user: robotlab-admin
+  password: robotlab2025
+  dbname: robotlab_auth
   sslmode: disable
   timezone: UTC
   connect_timeout: 5
@@ -66,10 +66,10 @@ email_server:
   api_key: your_mailgun_api_key
   domain: your_mailgun_domain
 
-redis:
-  host: localhost
-  port: 6379
-  expiration_time: 86400
+# redis:
+#   host: localhost
+#   port: 6379
+#   expiration_time: 86400
 
 styles:
   header_color: "#ffff00"
