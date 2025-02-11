@@ -9,15 +9,16 @@ import (
 )
 
 type User struct {
-	ID        string    `gorm:"type:uuid;primary_key"`
-	CreatedAt time.Time `json:"created_at"`
-	DeletedAt time.Time `json:"deleted_at"`
-	UserName  string    `json:"username"`
-	FirstName string    `json:"first_name"`
-	LastName  string    `json:"last_name"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Mode      Mode      `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;" json:"mode,omitempty"`
+	ID           string    `gorm:"type:uuid;primary_key"`
+	CreatedAt    time.Time `json:"created_at"`
+	DeletedAt    time.Time `json:"deleted_at"`
+	UserName     string    `json:"username"`
+	FirstName    string    `json:"first_name"`
+	LastName     string    `json:"last_name"`
+	Email        string    `json:"email"`
+	Organization string    `json:"organization"`
+	Password     string    `json:"password"`
+	Mode         Mode      `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;" json:"mode,omitempty"`
 }
 
 type Mode struct {
