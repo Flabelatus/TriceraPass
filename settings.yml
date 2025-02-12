@@ -2,10 +2,9 @@ api:
   name: ROBOTLAB_AUTH_SERVICE
   version: 1.0.1
   description: "Authentication service for the use case in the Robotlab HvA"
+  # This is only configured on the production server
   allowed_origins:
-    - http://localhost:3000
-    - http://localhost:5050
-    - https://dr-malcom.com
+    - https://hva-robotlab.nl
   # rate_limiting:
   #   requests_per_minute: 100
   #   burst: 50
@@ -34,13 +33,15 @@ application:
   domain: localhost
 
 server:
+  # This is only configured on the production server
   port: 1993
   host: "0.0.0.0"
   development_mode: true
 
 security:
   jwt:
-    secret: TRICERATOPLESS-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
+    # This is only configured on the production server
+    secret: very-secret-key
     expiration_time: 3600
     issuer: localhost
     audience: localhost
@@ -51,17 +52,19 @@ security:
 #   output: stdout
 
 database:
+  # These parameters are configured on the production server
   type: postgres
   host: postgres
   port: 5432
-  user: robotlab-admin
-  password: robotlab2025
-  dbname: robotlab_auth
+  user: user
+  password: password
+  dbname: dbname
   sslmode: disable
   timezone: UTC
   connect_timeout: 5
 
 email_server:
+  # These parameters are configured on the production server
   server_name: mailgun
   api_key: your_mailgun_api_key
   domain: your_mailgun_domain
