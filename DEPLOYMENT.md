@@ -4,6 +4,20 @@
 
 ---
 
+## **Table of Contents** 📖  
+
+1. [Auth Service 🔐](#auth-service-)  
+2. [Production App Configs ⚙️](#production-app-configs-️)  
+3. [Setup of CORS for Production ⚙️](#setup-of-cors-for-production-️)  
+4. [Build the App 🛠️](#build-the-app-️)  
+5. [Copying Files to Server 🗄️](#copying-files-to-server-️)  
+6. [Reverse Proxy Configurations 🌐](#reverse-proxy-configurations-️)  
+7. [Populate the Database 🗂️](#populate-the-database-️)  
+8. [Application Runtime 🚀](#application-runtime-️)
+
+
+---
+
 ## Production App Configs ⚙️
  - **Ensure you have added the domain of your service** 
  based on your DNS setup in the `settings.yml` file under the `allowed_origins` field.
