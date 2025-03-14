@@ -37,7 +37,6 @@ func GetUserByID(app *application.Application) http.HandlerFunc {
 
 		// Extract user ID from the URL parameters
 		idParam := chi.URLParam(r, "user_id")
-		fmt.Println(idParam)
 
 		// Fetch the user from the database
 		user, err := app.Repository.GetUserByID(idParam)
