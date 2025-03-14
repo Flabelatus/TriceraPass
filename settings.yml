@@ -1,6 +1,6 @@
 api:
   name: ROBOTLAB_AUTH_SERVICE
-  version: 1.0.1
+  version: 1.0.2
   description: "Authentication service for the use case in the Robotlab HvA"
   # This is only configured on the production server
   allowed_origins:
