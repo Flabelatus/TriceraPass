@@ -1,11 +1,15 @@
 api:
   name: DR_MALCOM_AUTH_SERVICE
   version: 1.0.2
+  version: 1.0.2
   description: "Authentication service for the use case Dr.Malcom"
   allowed_origins:
     - http://localhost:3000
     - http://localhost:5050
     - https://dr-malcom.com
+  rate_limiting:
+    requests_per_minute: 100
+    burst: 50
   rate_limiting:
     requests_per_minute: 100
     burst: 50
@@ -38,41 +42,6 @@ server:
   port: 1993
   host: "0.0.0.0"
   development_mode: true
-
-security:
-  jwt:
-    secret: very-secret
-    expiration_time: 3600
-    issuer: localhost
-    audience: localhost
-
-# logging:
-#   level: info
-#   format: json
-#   output: stdout
-
-database:
-  # These parameters are configured on the production server
-  type: postgres
-  host: localhost
-  port: 5432
-  user: dr-malcom-db-admin
-  password: password
-  dbname: dr-malcom_auth
-  sslmode: disable
-  timezone: UTC
-  connect_timeout: 5
-
-email_server:
-  # These parameters are configured on the production server
-  server_name: mailgun
-  api_key: your_mailgun_api_key
-  domain: your_mailgun_domain
-
-# redis:
-#   host: localhost
-#   port: 6379
-#   expiration_time: 86400
 
 styles:
   header_color: "#ffff00"

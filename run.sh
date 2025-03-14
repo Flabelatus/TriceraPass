@@ -37,31 +37,11 @@ if ! command -v curl >/dev/null 2>&1; then
   apk --no-cache add curl || { echo "Failed to install curl. Exiting."; exit 1; }
 fi
 
-# Create the .env file 
-if [[ "$CONTAINERIZE" == true ]]; then
-  echo "Generating .env file from settings.yml for docker instance... "
-  ./generate-env.sh --docker
-else
-  echo "Generating .env file from settings.yml for local instance... "
-  ./generate-env.sh 
-fi
-
-
-if [ $? -eq 0 ]; then
-  echo ".env file generated successfully."
-else
-  echo "Failed to generate .env file. Exiting."
-  exit 1
-fi
-
 # Ensure the .env file was generated successfully
 if [ ! -f .env ]; then
-    echo ".env file is missing, please check the generation process."
+    echo ".env file is missing"
     exit 1
 fi
-
-echo ".env file generated successfully."
-cat .env
 
 # Download wait-for-it.sh if it doesn't exist
 if [ ! -f ./wait-for-it.sh ]; then

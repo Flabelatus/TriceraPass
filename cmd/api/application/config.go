@@ -27,25 +27,6 @@ type Config struct {
 		DevelopmentMode bool   `yaml:"development_mode"` // Is the server in development mode
 	} `yaml:"server"`
 
-	Database struct {
-		User          string `yaml:"user"`            // Database username
-		Password      string `yaml:"password"`        // Database password
-		Name          string `yaml:"dbname"`          // Database name
-		Host          string `yaml:"host"`            // Database host address
-		Port          string `yaml:"port"`            // Database port
-		SSL           string `yaml:"sslmode"`         // SSL mode for database connection
-		Timezone      string `yaml:"timezone"`        // Database timezone
-		ConnectTimout string `yaml:"connect_timeout"` // Database connection timeout
-	} `yaml:"database"`
-
-	Security struct {
-		JWT struct {
-			Secret   string `yaml:"secret"`   // JWT secret for signing tokens
-			Issuer   string `yaml:"issuer"`   // JWT issuer claim
-			Audience string `yaml:"audience"` // JWT audience claim
-		} `yaml:"jwt"`
-	} `yaml:"security"`
-
 	Application struct {
 		ClientName   string `yaml:"client_name"`   // Name of the client application
 		CookieDomain string `yaml:"cookie_domain"` // Domain for setting cookies
