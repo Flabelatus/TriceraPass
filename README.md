@@ -1,5 +1,5 @@
 # Authentication Service API
-[![version](https://img.shields.io/badge/version-v1.0.1-brightgreen)]()
+[![version](https://img.shields.io/badge/version-v1.0.2-brightgreen)]()
 
 This project is a **Golang-based Authentication Service** API designed to provide user authentication and authorization functionality. It offers a set of RESTful endpoints to handle user login, registration, token management, password reset, and more. It also includes support for user profile management and image uploads.
 
@@ -78,7 +78,7 @@ All configurations are handled via the `settings.yml` file. You need to configur
     ```yaml
     api:
         name: TriceraPass Auth Service
-        version: 1.0.0
+        version: 1.0.2
         description: "God creates dinosaurs! God destroys dinosaurs! God creates man! Man destroys God! Man creates dinosaurs!"
         allowedOrigins:
             - http://localhost:3000
@@ -98,35 +98,10 @@ All configurations are handled via the `settings.yml` file. You need to configur
         host: 0.0.0.0
         developmentMode: true
 
-    security:
-        jwt:
-            # Only configure on your server
-            secret: TRICERATOPLESS-eb5d5e9f-86ac-4766-93e2-d760cbb86e7d
-            expirationTime: 3600
-            issuer: dr-malcom.com
-            audience: dr-malcom.com
-
     logging:
         level: INFO
         format: json
         output: stdout
-
-    database:
-        # Only configure on your server
-        type: postgres
-        host: localhost
-        port: 5432
-        user: velociRaptor
-        password: CleverGirl
-        dbname: dino-division
-        sslmode: disable
-        timezone: UTC
-        connect_timeout: 5
-
-    emailServer:
-        serverName: mailgun
-        apiKey: your_mailgun_api_key
-        domain: your_mailgun_domain
 
     redis:
         host: localhost
