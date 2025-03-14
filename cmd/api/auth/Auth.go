@@ -30,6 +30,7 @@ type JwtUser struct {
 	FirstName string `json:"first_name"` // User's first name.
 	UserName  string `json:"username"`   // User's username.
 	LastName  string `json:"last_name"`  // User's last name.
+	Role      string `json:"role"`       // User's role
 }
 
 // TokenPairs represents the access and refresh tokens.
@@ -68,6 +69,7 @@ func (j *Auth) GenerateTokenPair(user *JwtUser) (TokenPairs, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["jti"] = tokenID
 	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
+	claims["role"] = user.Role
 	claims["sub"] = fmt.Sprint(user.ID)
 	claims["aud"] = j.Audience
 	claims["iss"] = j.Issuer

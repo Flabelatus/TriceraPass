@@ -34,7 +34,7 @@ func (r *GORMRepo) UpdateUser(id string, user *models.User) (*models.User, error
 
 func (r *GORMRepo) GetAllUsers() ([]models.User, error) {
 	var users []models.User
-	err := r.DB.Find(&users).Error
+	err := r.DB.Preload("Mode").Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (r *GORMRepo) GetUserByID(id string) (*models.User, error) {
 
 func (r *GORMRepo) GetUserByEmail(email string) (*models.User, error) {
 	var user *models.User
-	err := r.DB.Where("email = ?", email).First(&user).Error
+	err := r.DB.Preload("Mode").Where("email = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
 	}
