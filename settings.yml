@@ -1,6 +1,7 @@
 api:
   name: DR_MALCOM_AUTH_SERVICE
   version: 1.0.2
+  version: 1.0.2
   description: "Authentication service for the use case Dr.Malcom"
   allowed_origins:
     - http://localhost:3000
