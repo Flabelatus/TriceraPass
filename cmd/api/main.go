@@ -50,20 +50,20 @@ func main() {
 	defaultDSN := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s timezone=%s connect_timeout=%s",
 		os.Getenv("POSTGRES_HOST"),
-		config.Database.Port,
-		config.Database.User,
-		config.Database.Password,
-		config.Database.Name,
-		config.Database.SSL,
-		config.Database.Timezone,
-		config.Database.ConnectTimout,
+		os.Getenv("POSTGRES_PORT"),
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_DB"),
+		os.Getenv("DATABASE_SSL_MODE"),
+		os.Getenv("DATABASE_TIMEZONE"),
+		os.Getenv("DATABASE_TIMEOUT"),
 	)
 
 	// read from command line
 	flag.StringVar(&app.DSN, "dsn", defaultDSN, "Postgres connection string")
-	flag.StringVar(&app.JWTSecret, "jwt-secret", config.Security.JWT.Secret, "JWT signing secret")
-	flag.StringVar(&app.JWTIssuer, "jwt-issuer", config.Security.JWT.Issuer, "JWT signing issuer")
-	flag.StringVar(&app.JWTAudience, "jwt-audience", config.Security.JWT.Audience, "JWT signing audience")
+	flag.StringVar(&app.JWTSecret, "jwt-secret", os.Getenv("JWT_SECRET"), "JWT signing secret")
+	flag.StringVar(&app.JWTIssuer, "jwt-issuer", os.Getenv("JWT_ISSUER"), "JWT signing issuer")
+	flag.StringVar(&app.JWTAudience, "jwt-audience", os.Getenv("JWT_AUDIENCE"), "JWT signing audience")
 	flag.StringVar(&app.CookieDomain, "cookie-domain", config.Application.CookieDomain, "Cookie domain")
 	flag.StringVar(&app.Domain, "domain", config.Application.Domain, "Application domain")
 	flag.Parse()

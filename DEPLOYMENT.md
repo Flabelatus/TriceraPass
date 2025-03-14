@@ -27,30 +27,46 @@
  api:
         # These parameters are configured for the production server
         allowed_origins:
-                - https://hva-robotlab.nl
+                - https://example-domain-1.com
+                - https://example-domain-2.com
 
-        # These parameters are configured for the production server
-        email_server:
-                api_key: your_mailgun_api_key
-                domain: your_mailgun_domain
+```
+Add the necessary values in the `.env` file according to `.env.example`
+```shell
+# Docker build
+API_BUILD_CONTEXT=
+CUSTOM_SERVICE_BUILD_CONTEXT=
+CUSTOM_SERVICE_CONTAINER_NAME=
+CUSTOM_SERVICE_PORTS=
 
-        # These parameters are configured for the production server
-        database:
-                type: postgres
-                host: postgres
-                port: 5432
-                user: user
-                password: password
-                dbname: dbname
-                sslmode: disable
-                timezone: UTC
-                connect_timeout: 5
+# Database
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=dbname
+DATABASE_SSL_MODE=disable
+DATABASE_TIMEOUT=5
+DATABASE_TIMEZONE='UTC'
+
+# Token
+JWT_SECRET=very-secret
+JWT_ISSUER=https://dr-malcom.com
+JWT_AUDIENCE=https://dr-malcom.com
+
+# API
+CONFIG_FILE=./settings.yml
+AUTH_SERVICE_PORT=1993
+CORS=http://localhost:3000,http://localhost:5000
+LOGGING_LEVEL=DEBUG
+
+# Mail server
+MAIL_SERVER_NAME=mailgun
+MAIL_SERVER_API_KEY=your_mailgun_api_key
+MAIL_SERVER_DOMAIN=your_mailgun_domain
+
 ```
-- **Export the settings to environment variables**
-```bash
-#script to export all the environment variables needed for production
-./generate-env.sh 
-```
+
 ## Setup of CORS for the production ⚙️
 - **Ensure the following snippet is used**  
 in the middleware setup `/cmd/api/application/middleware.go`
@@ -101,7 +117,7 @@ func (app *Application) EnableCORS(h http.Handler) http.Handler {
 - Once ready, to build the app run this command:
 
 ```bash
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o robotlabAuth ./cmd/api
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o authService ./cmd/api
 ```
 
 ---
@@ -110,20 +126,20 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o robotlabAuth ./cmd/api
 - Copy the compiled app file to the server
 Use `scp` to copy the binary file to the server
 ```bash
-scp robotlabAuth .env settings.yml root@152.42.131.10:/var/www/api.robotlabAuth
-scp -r static template root@152.42.131.10:/var/www/api.robotlabAuth
+scp authService .env settings.yml user@server-ip:/var/www/api.authService
+scp -r static template user@server-ip:/var/www/api.authService
 ```
 
 - **Dumping the Postgresql file**
 Since its running in the docker compose follow this command to dump the postgres database file
 ```bash
-docker-compose exec postgres pg_dump --no-owner -h localhost -p 5432 -U robotlab_auth database > database.sql
+docker-compose exec postgres pg_dump --no-owner -h localhost -p 5432 -U auth_service database > database.sql
 ```
 
 - **Copy the database file to the server**
 Use `scp` to copy the sql file to the server
 ```bash
-scp database.sql root@152.42.131.10:/home/robotlabAuth
+scp database.sql user@server-ip:/home/authService
 ```
 
 ---
@@ -139,7 +155,7 @@ Then navigate to `/etc/caddy/` and add the following directives to the `Caddyfil
 
 ```nginx
 {
-    email j.jooshesh@hva.nl
+    email example@email.com
 }
 
 (static) {
@@ -161,25 +177,25 @@ Then navigate to `/etc/caddy/` and add the following directives to the `Caddyfil
         }
 }
 
-hva-robotlab.nl {
+example.com {
         encode zstd gzip
         import static
         import security
 
         handle {
-                root * /var/www/api.robotlabAuth
+                user * /var/www/api.authService
                 file_server
         }
 
         # Serve static assets (like images, CSS, JS)
         handle_path /assets/* {
-                root * /var/www/api.robotlabAuth/template/docs/assets
+                user * /var/www/api.authService/template/docs/assets
                 file_server
         }
 
         # Serve documentation HTML files
         handle_path /auth/api/docs/* {
-                root * /var/www/api.robotlabAuth/template/docs
+                user * /var/www/api.authService/template/docs
                 file_server
                 try_files {path} /index.html  # Serve index.html if the requested file is missing
         }
@@ -200,8 +216,8 @@ hva-robotlab.nl {
         }
 }
 
-www.hva-robotlab.nl {
-        redir https://hva-robotlab.nl
+www.example.com {
+        redir https://example.com
 
 }
 ```
@@ -233,7 +249,7 @@ psql -u postgres
 ```
 Then create the database
 ```SQL
-CREATE DATABASE robotlabAuth;
+CREATE DATABASE authService;
 ```
 After that you can check the connection:
 ```
@@ -247,9 +263,9 @@ Now you would need to use the file which was dumped from our Postgres db in the 
 Run the following commands:
 ```bash
 # Navigate to where the dumped SQL file is located
-cd /home/robotlabAuth
+cd /home/authService
 # Run the psql command using the user, database name and the dump file
-sudo -u postgres psql -d robotlabAuth -f database.sql
+sudo -u postgres psql -d authService -f database.sql
 ```
 Now your database is populated with the schema
 
@@ -278,8 +294,8 @@ Then enter the following instructions:
 
 ```ini
 [program:api]
-command=/var/www/api.robotlabAuth/robotlabAuth -dsn='host=localhost port=5432 user=postgres password=password dbname=database sslmode=disable' -jwt-secret='sercret' -jwt-issuer='hva-robotlab.nl' -jwt-audience='hva-robotlab.nl' -cookie-domain=''
-directory=/var/www/api.robotlabAuth
+command=/var/www/api.authService/authService -dsn='host=localhost port=5432 user=postgres password=password dbname=database sslmode=disable' -jwt-secret='your-jwt-sercret' -jwt-issuer='example.com' -jwt-audience='example.com' -cookie-domain=''
+directory=/var/www/api.authService
 autorestart=true
 autostart=true
 stdout_logfile=/var/www/logs/api.logs
