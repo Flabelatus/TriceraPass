@@ -62,7 +62,6 @@ func Authenticate(app *application.Application) http.HandlerFunc {
 			Email    string `json:"email"`
 			Password string `json:"password"`
 		}
-
 		err := utils.ReadJSON(w, r, &requestPayload)
 		if err != nil {
 			utils.ErrorJSON(w, err, http.StatusBadRequest)
@@ -89,6 +88,7 @@ func Authenticate(app *application.Application) http.HandlerFunc {
 			UserName:  user.UserName,
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
+			Role:      user.Mode.Name,
 		}
 
 		tokens, err := app.Auth.GenerateTokenPair(&u)
@@ -143,6 +143,7 @@ func RefreshToken(app *application.Application) http.HandlerFunc {
 					UserName:  user.UserName,
 					FirstName: user.FirstName,
 					LastName:  user.LastName,
+					Role:      user.Mode.Name,
 				}
 				tokenPairs, err := app.Auth.GenerateTokenPair(&u)
 				if err != nil {
