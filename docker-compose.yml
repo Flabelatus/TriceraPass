@@ -11,6 +11,10 @@ services:
       PGDATA: /var/lib/postgresql/data/postgres-data
     ports:
       - '5432:5432'
+    logging:
+      options:
+        max-size: 100m
+        max-file: "12"
     volumes:
-      - ./postgres-data:/var/lib/postgresql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
