@@ -17,4 +17,4 @@ services:
         max-file: "12"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
